@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WinFormExpl_Test
@@ -71,62 +72,75 @@ namespace WinFormExpl_Test
             //Assert.AreEqual(string.Empty, editBox.Text);
         }
 
+        protected  WindowsElement OpenDialog()
+        {
+            var fileMenu = session.AssertFindElementByName("File", "menü");
+            fileMenu.Click();
+            var openMenu = session.AssertFindElementByName("Open", "menü");
+            openMenu.Click();
+
+            Thread.Sleep(500); // Wait for half second until the  dialog appears
+
+            var dialog = session.AssertFindElementByName("InputDialog", "dialógus ablak");
+            return dialog;
+        }
+
         protected static string SanitizeBackslashes(string input) => input.Replace("\\", Keys.Alt + Keys.NumberPad9 + Keys.NumberPad2 + Keys.Alt);
 
-        protected static WindowsElement FindElementByName(string name, string elementType)
-        {
-            try
-            {
-                return session.FindElementByName(name);
-            }
-            catch (InvalidOperationException)
-            {
-                Assert.Fail($"Nem található a következő felületelem: {name} {elementType}");
-                throw; // Needed to reassure the compiler
-            }
-        }
+        //protected static WindowsElement FindElementByName(string name, string elementType)
+        //{
+        //    try
+        //    {
+        //        return session.FindElementByName(name);
+        //    }
+        //    catch (InvalidOperationException)
+        //    {
+        //        Assert.Fail($"Nem található a következő felületelem: {name} {elementType}");
+        //        throw; // Needed to reassure the compiler
+        //    }
+        //}
 
-        protected static WindowsElement FindElementByXPath(string xpath, string elementDescription)
-        {
-            try
-            {
-                return session.FindElementByXPath(xpath);
-            }
-            catch (InvalidOperationException)
-            {
-                Assert.Fail($"Nem található a következő felületelem: {elementDescription}");
-                throw; // Needed to reassure the compiler
-            }
-        }
+        //protected static WindowsElement FindElementByXPath(string xpath, string elementDescription)
+        //{
+        //    try
+        //    {
+        //        return session.FindElementByXPath(xpath);
+        //    }
+        //    catch (InvalidOperationException)
+        //    {
+        //        Assert.Fail($"Nem található a következő felületelem: {elementDescription}");
+        //        throw; // Needed to reassure the compiler
+        //    }
+        //}
 
-        protected static WindowsElement FindElementByAlternativeNames(string[] names, string elemetType)
-        {
-            foreach (var name in names)
-            {
-                try
-                {
-                    var e = session.FindElementByName(name);
-                    return e;
-                }
-                catch (InvalidOperationException)
-                {
-                }
-            }
-            Assert.Fail($"Nem található a következő felületelem: {names[0]} {elemetType}");
-            throw new Exception("never get here"); // Needed to reassure the compiler
-        }
+        //protected static WindowsElement FindElementByAlternativeNames(string[] names, string elemetType)
+        //{
+        //    foreach (var name in names)
+        //    {
+        //        try
+        //        {
+        //            var e = session.FindElementByName(name);
+        //            return e;
+        //        }
+        //        catch (InvalidOperationException)
+        //        {
+        //        }
+        //    }
+        //    Assert.Fail($"Nem található a következő felületelem: {names[0]} {elemetType}");
+        //    throw new Exception("never get here"); // Needed to reassure the compiler
+        //}
 
-        protected static void AssertElementNotFound(string name, string errorText)
-        {
-            try
-            {
-                session.FindElementByName(name);
-                Assert.Fail(errorText);
-            }
-            catch (InvalidOperationException)
-            {
-            }
-        }
+        //protected static void AssertElementNotFound(string name, string errorText)
+        //{
+        //    try
+        //    {
+        //        session.FindElementByName(name);
+        //        Assert.Fail(errorText);
+        //    }
+        //    catch (InvalidOperationException)
+        //    {
+        //    }
+        //}
 
     }
 }

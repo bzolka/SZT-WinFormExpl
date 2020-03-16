@@ -8,7 +8,7 @@ namespace WinFormExpl_Test
     public class Feladat1Test: AppSession
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestAll()
         {
             // Vezérlők megtalálása FindElementByName-mel:
             // Ha az AccessibleName ki van töltve, akkor az alapján 
@@ -16,14 +16,14 @@ namespace WinFormExpl_Test
             // Vigyázat, ha az AccessibleName egyszer ki volt töltve, akkor nem elég a prop 
             // editorban törölni, a designer.cs-ből is kell!
 
-            var fileMenu = FindElementByName("File", "menü");
+            var fileMenu = session.AssertFindElementByName("File", "menü");
             fileMenu.Click();
-            var openMenu = FindElementByName("Open", "menü");
-            var exitMenu = FindElementByName("Exit", "menü");
+            var openMenu = session.AssertFindElementByName("Open", "menü");
+            var exitMenu = session.AssertFindElementByName("Exit", "menü");
             exitMenu.Click();
 
             Thread.Sleep(1000); // Not sure if this is needed
-            AssertElementNotFound("File", "Az Exit menü nem zárja be az alkalmazást!");
+            session.AssertElementNotFound("File", "Az Exit menü nem zárja be az alkalmazást!");
 
         }
 
