@@ -67,7 +67,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSession.cs" />
-    <Compile Include="DialogHelper.cs" />
     <Compile Include="ElementProvider.cs" />
     <Compile Include="Feladat1Test.cs" />
     <Compile Include="InputDialog.cs" />
@@ -75,6 +74,7 @@
     <Compile Include="TestHelper.cs" />
     <Compile Include="Feladat2Test.cs" />
     <Compile Include="Feladat3Test.cs" />
+    <Compile Include="WindowsElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

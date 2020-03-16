@@ -28,6 +28,7 @@ namespace WinFormExpl_Test
                 // Create a new session to launch Notepad application
                 DesiredCapabilities appCapabilities = new DesiredCapabilities();
                 appCapabilities.SetCapability("app", AppId);
+                appCapabilities.SetCapability("ms:experimental-webdriver", true);
                 session = new WindowsDriver<WindowsElement>(new Uri(WindowsApplicationDriverUrl), appCapabilities);
                 Assert.IsNotNull(session);
                 Assert.IsNotNull(session.SessionId);
