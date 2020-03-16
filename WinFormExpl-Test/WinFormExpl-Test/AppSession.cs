@@ -73,7 +73,7 @@ namespace WinFormExpl_Test
 
         protected static string SanitizeBackslashes(string input) => input.Replace("\\", Keys.Alt + Keys.NumberPad9 + Keys.NumberPad2 + Keys.Alt);
 
-        protected static WindowsElement FindElementByName(string name, string elemetType)
+        protected static WindowsElement FindElementByName(string name, string elementType)
         {
             try
             {
@@ -81,9 +81,39 @@ namespace WinFormExpl_Test
             }
             catch (InvalidOperationException)
             {
-                Assert.Fail($"Nem található a következő felületelem: {name} {elemetType}");
+                Assert.Fail($"Nem található a következő felületelem: {name} {elementType}");
                 throw; // Needed to reassure the compiler
             }
+        }
+
+        protected static WindowsElement FindElementByXPath(string xpath, string elementDescription)
+        {
+            try
+            {
+                return session.FindElementByXPath(xpath);
+            }
+            catch (InvalidOperationException)
+            {
+                Assert.Fail($"Nem található a következő felületelem: {elementDescription}");
+                throw; // Needed to reassure the compiler
+            }
+        }
+
+        protected static WindowsElement FindElementByAlternativeNames(string[] names, string elemetType)
+        {
+            foreach (var name in names)
+            {
+                try
+                {
+                    var e = session.FindElementByName(name);
+                    return e;
+                }
+                catch (InvalidOperationException)
+                {
+                }
+            }
+            Assert.Fail($"Nem található a következő felületelem: {names[0]} {elemetType}");
+            throw new Exception("never get here"); // Needed to reassure the compiler
         }
 
         protected static void AssertElementNotFound(string name, string errorText)
