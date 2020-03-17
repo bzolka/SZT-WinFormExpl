@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Appium.Windows;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,6 +13,7 @@ namespace WinFormExpl_Test
     class InputDialog
     {
         WindowsDriver<WindowsElement> session;
+        WindowsElement dialog;
 
         public InputDialog(WindowsDriver<WindowsElement> session)
         {
@@ -27,26 +29,45 @@ namespace WinFormExpl_Test
 
             Thread.Sleep(500); // Wait for half second until the  dialog appears
 
-            var dialog = session.AssertFindElementByName("InputDialog", "dialógus ablak");
+            dialog = session.AssertFindElementByName("InputDialog", "dialógus ablak");
             return dialog;
+        }
+        public WindowsElement GetEdit()
+        {
+            return session.AssertFindElementByXPath("//Edit", "TextBox az útvonal bekéréshez");
+        }
+
+        public WindowsElement GetOkButton()
+        {
+            return session.AssertFindElementByAlternativeNames(new string[] { "Ok", "OK", "ok" }, "gomb");
+        }
+
+        public WindowsElement GetCancelButton()
+        {
+            return session.AssertFindElementByName("Cancel", "gomb");
         }
 
         public void SetEditText(string text)
         {
-            var edit = session.AssertFindElementByXPath("//Edit", "TextBox az útvonal bekéréshez");
+            var edit = GetEdit();
             text = SanitizeBackslashes(text);
             edit.SendKeys(text);
         }
 
         public string GetEditText()
         {
-            var edit = session.AssertFindElementByXPath("//Edit", "TextBox az útvonal bekéréshez");
+            var edit = GetEdit();
             return edit.Text;
+        }
+
+        public Size GetSize()
+        {
+            return dialog.Size;
         }
 
         public void CloseWithCancel()
         {
-            var cancelButton = session.AssertFindElementByName("Cancel", "gomb");
+            var cancelButton = GetCancelButton();
             cancelButton.Click();
             Thread.Sleep(500);
             session.AssertElementNotFound("Cancel", "A Cancel gomb nem zárja be a dialógus ablakot.");
@@ -54,7 +75,7 @@ namespace WinFormExpl_Test
 
         public void CloseWithOk()
         {
-            var OklButton = session.AssertFindElementByAlternativeNames(new string[] { "Ok", "OK", "ok" }, "gomb");    // TODO-bz: elfogadja a máshogy  kis-nagybetűzött OK-ot is?
+            var OklButton = GetOkButton();
             OklButton.Click();
             Thread.Sleep(500);
             session.AssertElementNotFound("Ok", "Az OK gomb nem zárja be a dialógus ablakot.");
