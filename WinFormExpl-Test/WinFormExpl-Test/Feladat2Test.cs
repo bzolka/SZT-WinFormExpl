@@ -14,7 +14,7 @@ namespace WinFormExpl_Test
     public class Feladat2Test: AppSession
     {
         [TestMethod]
-        public void CloseCancel()
+        public void TestCloseCancel()
         {
             InputDialog dlg = new InputDialog(session);
 
@@ -26,7 +26,7 @@ namespace WinFormExpl_Test
         }
 
         [TestMethod]
-        public void CloseOk()
+        public void TestCloseOk()
         {
             InputDialog dlg = new InputDialog(session);
 
@@ -39,7 +39,7 @@ namespace WinFormExpl_Test
         }
 
         [TestMethod]
-        public void Edit()
+        public void TestEdit()
         {
             InputDialog dlg = new InputDialog(session);
 
@@ -54,7 +54,7 @@ namespace WinFormExpl_Test
         }
 
         [TestMethod]
-        public void Anchor()
+        public void TestAnchor()
         {
             InputDialog dlg = new InputDialog(session);
             // Check if Textbox exists and we can type into it
