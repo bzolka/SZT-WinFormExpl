@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace WinFormExpl_Test
 {
-    static class ElementProvider
+    static class AssertFindElementExtensions
     {
         public static WindowsElement AssertFindElementByName(this WindowsDriver<WindowsElement> session, string name, string elementType)
         {

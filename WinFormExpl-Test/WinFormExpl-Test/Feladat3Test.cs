@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,6 +13,9 @@ namespace WinFormExpl_Test
         const string path = @"c:\temp\Watched\";    // TODO-bz, adjust path
         static InputDialog dlg;
 
+        AssertElements assertElements = new AssertElements(session);
+
+
         [TestMethod]
         public void TestSplitter()
         {
@@ -23,8 +27,7 @@ namespace WinFormExpl_Test
         public void TestFileView()
         {
             // ListView exists
-            var listView = session.AssertFindElementByXPath("//List", "ListView megjelenítő");
-            // Name header exists
+            assertElements.FileListView();
             var headerName = session.AssertFindElementByXPath("//HeaderItem[@Name=\"Name\"]", "Name fejlécű oszlop");
             // Size header exists
             var headerSize = session.AssertFindElementByXPath("//HeaderItem[@Name=\"Size\"]", "Size fejlécű oszlop");
@@ -66,6 +69,8 @@ namespace WinFormExpl_Test
 
             string sCreated = new FileInfo(Path.Combine(path, "b.txt")).CreationTime.ToString();
             var lCreated = session.AssertFindElementByXPath($"//Text[@Name=\"{sCreated}\"][@AutomationId=\"lCreated\"]", "címke, mely a fájl létrehozási idejét mutatja");
+
+            
         }
 
         [TestMethod]
@@ -81,7 +86,7 @@ namespace WinFormExpl_Test
 
             var listViewItem = session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileName}\"]/Text", "listaelem fájlnévvel");
             listViewItem.DoubleClick();
-            var editContent = session.AssertFindElementByXPath("//Edit[@AutomationId=\"tContent\"]", "tContent nevű többsoros szövegdoboz");
+            var editContent = assertElements.FileContentEdit();
             string fileContentText = File.ReadAllText(Path.Combine(path, fileName));
             Assert.AreEqual(fileContentText, editContent.Text, "A többsoros szövegdoboz nem jeleníti mega  fájl tartalmát");
         }
@@ -89,13 +94,39 @@ namespace WinFormExpl_Test
         [TestMethod]
         public void TestRun()
         {
-
+            // TODO-bz
 
         }
 
+        [TestMethod]
         public void TestDock()
         {
+            // TODO-bz
+            var listView = assertElements.FileListView();
+            var listViewOriginalSize = listView.Size;
 
+            var editContent = assertElements.FileContentEdit();
+            var editContentOriginalSize = editContent.Size;
+
+            var windowSize = session.Manage().Window.Size;
+
+            var offset = new Size(100, 120);
+
+            // Resize main window
+            session.Manage().Window.Size = new Size(windowSize.Width + offset.Width, windowSize.Height + offset.Height);
+            Thread.Sleep(500);
+
+            var listViewNewSize = listView.Size;
+            Assert.IsTrue(
+                listViewNewSize.Width >= listViewOriginalSize.Width + offset.Width/2 - 15  && listViewNewSize.Width <= listViewOriginalSize.Width + offset.Width / 2 + 15 &&
+                listViewNewSize.Height >= listViewOriginalSize.Height + offset.Height -5 && listViewNewSize.Height <= listViewOriginalSize.Height + offset.Height + 5,
+                "A fájlmegjelenítő lista nem méreteződik az ablakkal");
+
+            var editContentNewSize = editContent.Size;
+            Assert.IsTrue(
+                editContentNewSize.Width >= editContentOriginalSize.Width + offset.Width / 2 - 15 && editContentNewSize.Width <= editContentOriginalSize.Width + offset.Width / 2 + 15 &&
+                editContentNewSize.Height >= editContentOriginalSize.Height + offset.Height - 5 && editContentNewSize.Height <= editContentOriginalSize.Height + offset.Height + 5,
+                "A fájltartalom megjelenítő szövegdoboz nem méreteződik az ablakkal");
         }
 
 
