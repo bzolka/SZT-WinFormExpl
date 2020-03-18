@@ -16,10 +16,11 @@ namespace WinFormExpl_Test
     {
         protected const string WindowsApplicationDriverUrl = "http://127.0.0.1:4723";
         protected static readonly TimeSpan DefaultSessionImplicitWaitSec = TimeSpan.FromSeconds(0.1);
-        // TODO-bz
-        private const string AppId = @"d:\Tanszek\BZ\SZT-WinForms-Test\Feladatok\WindowsFormsApp\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe";
-        // protected const string rootPath = @"c:\temp\Watched\";    // TODO-bz, adjust path
-        protected static readonly string rootPath = Path.GetFullPath(@"..\..\..\TestFiles");    // TODO-bz, adjust path
+        // This setting can be overridden by the runsettings file
+        //private static string AppId = @"d:\Tanszek\BZ\SZT-WinForms-Test\Feladatok\WindowsFormsApp\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe";
+        private static string AppId = @"..\..\..\..\SampleSolution\WinFormExpl\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe";
+        // This setting can be overridden by the runsettings file
+        protected static string rootPath = Path.GetFullPath(@"..\..\..\TestFiles");
         protected const string subFolderName = "a.txt";
 
         protected const string fileA = "a.txt";
@@ -28,11 +29,9 @@ namespace WinFormExpl_Test
         protected const string fileD = "d.txt";
         protected const string FolderA = "FolderA";
         protected const string FolderParent = "..";
-
         protected const string fileASize = "13";
         protected const string fileBSize = "14";
-        protected const int menuItemFileWidthIn96Dpi = 37; // Can be OS dependent
-        
+        protected const int menuItemFileWidthIn96Dpi = 37; // BZ: Can be OS dependent ???!!!
 
         protected static WindowsDriver<WindowsElement> session;
         //protected static WindowsElement editBox;
@@ -42,6 +41,20 @@ namespace WinFormExpl_Test
             // Launch a new instance of Notepad application
             if (session == null)
             {
+                bool e = File.Exists(AppId);
+                // Get AppId from .runsettings
+                var tempAppId = context.Properties["AppId"];
+                if (tempAppId != null)
+                    AppId = (string)tempAppId;
+                AppId = Path.GetFullPath(AppId); // WindowsDriver apparently cannot work with relative paths (sounds reasonable if path is sent to WinAPpDriver server)
+                context.WriteLine("AppId: " + AppId);
+
+                // Get RootPath from .runsettings
+                var tempRootPath = context.Properties["RootPath"];
+                if (tempRootPath != null)
+                    rootPath = (string)tempRootPath;
+                context.WriteLine("rootPath: " + rootPath);
+
                 // Create a new session to launch Notepad application
                 DesiredCapabilities appCapabilities = new DesiredCapabilities();
                 appCapabilities.SetCapability("app", AppId);
