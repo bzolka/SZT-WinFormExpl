@@ -10,9 +10,6 @@ namespace WinFormExpl_Test
     [TestClass]
     public class Feladat3Test: AppSession
     {
-        const string path = @"c:\temp\Watched\";    // TODO-bz, adjust path
-        static InputDialog dlg;
-
         AssertElements assertElements = new AssertElements(session);
 
 
@@ -32,14 +29,14 @@ namespace WinFormExpl_Test
             // Size header exists
             var headerSize = session.AssertFindElementByXPath("//HeaderItem[@Name=\"Size\"]", "Size fejlécű oszlop");
 
-            // a.txt
-            session.AssertFindElementByXPath("//ListItem[@Name=\"a.txt\"]", "listaelem, fájlnév");
-            // b.txt
-            session.AssertFindElementByXPath("//ListItem[@Name=\"b.txt\"]", "listaelem, fájlnév");
-            // a.txt size
-            session.AssertFindElementByXPath("//Text[@Name=\"13\"]", "listaelem, méret");
-            // b.txt size
-            session.AssertFindElementByXPath("//Text[@Name=\"14\"]", "listaelem, méret");
+            // fileA
+            session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileA}\"]", "listaelem, fájlnév");
+            // fileB
+            session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileB}\"]", "listaelem, fájlnév");
+            // fileA size
+            session.AssertFindElementByXPath($"//Text[@Name=\"{fileASize}\"]", "listaelem, méret");
+            // fileB size
+            session.AssertFindElementByXPath($"//Text[@Name=\"{fileBSize}\"]", "listaelem, méret");
 
             //var elements = session.FindElementsByXPath("//*");
             // session.AssertFindElementByXPath("/ListItem[@T=\"a.txt\"]", "alma");
@@ -59,7 +56,7 @@ namespace WinFormExpl_Test
         }
 
         [TestMethod]
-        public void TesInfoPanel()
+        public void TestInfoPanel()
         {
             // select b.txt in ListView
             var listViewItem = session.AssertFindElementByXPath("//ListItem[@Name=\"b.txt\"]/Text", "listaelem fájlnévvel");
@@ -76,19 +73,17 @@ namespace WinFormExpl_Test
         [TestMethod]
         public void TestContentView()
         {
-            testContentForFile("a.txt");
-            testContentForFile("b.txt");
+            testContentForFile(fileA);
+            testContentForFile(fileB);
         }
 
         void testContentForFile(string fileName)
         {
-            // Double click on a.txt in ListView
-
-            var listViewItem = session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileName}\"]/Text", "listaelem fájlnévvel");
-            listViewItem.DoubleClick();
+            // Double click on fileA in ListView
+            openContentForFile(fileName);
             var editContent = assertElements.FileContentEdit();
             string fileContentText = File.ReadAllText(Path.Combine(path, fileName));
-            Assert.AreEqual(fileContentText, editContent.Text, "A többsoros szövegdoboz nem jeleníti mega  fájl tartalmát");
+            Assert.AreEqual(fileContentText, editContent.Text, "A többsoros szövegdoboz nem jeleníti meg a fájl tartalmát");
         }
 
         [TestMethod]
@@ -137,10 +132,6 @@ namespace WinFormExpl_Test
             dlg.OpenDialog();
             dlg.SetEditText(path);
             dlg.CloseWithOk();
-
-            // Check if main window displays content
-
-            // Check functionality of the Run menu
         }
 
         [ClassInitialize]

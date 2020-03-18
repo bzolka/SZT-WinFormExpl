@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace WinFormExpl_Test
 {
-    static class TestHelper
+    static class CompareHelper
     {
-        static int maxDiff = 5;
-
-        public static bool AreAlmostEqual(int a, int b)
+        public static bool AreAlmostEqual(int a, int b, int maxDiff)
         {
             return a > b ? a - b <= maxDiff : b - a <= maxDiff;
         }

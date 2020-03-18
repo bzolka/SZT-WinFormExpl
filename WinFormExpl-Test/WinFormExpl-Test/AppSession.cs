@@ -14,8 +14,16 @@ namespace WinFormExpl_Test
     public class AppSession
     {
         protected const string WindowsApplicationDriverUrl = "http://127.0.0.1:4723";
+        protected static readonly TimeSpan DefaultSessionImplicitWaitSec = TimeSpan.FromSeconds(0.1);
         // TODO-bz
         private const string AppId = @"d:\Tanszek\BZ\SZT-WinForms-Test\Feladatok\WindowsFormsApp\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe";
+        protected const string path = @"c:\temp\Watched\";    // TODO-bz, adjust path
+        protected const string fileA = "a.txt";
+        protected const string fileB = "b.txt";
+        protected const string fileASize = "13";
+        protected const string fileBSize = "14";
+        protected const int menuItemFileWidthIn96Dpi = 37; // Can be OS dependent
+        
 
         protected static WindowsDriver<WindowsElement> session;
         //protected static WindowsElement editBox;
@@ -37,7 +45,7 @@ namespace WinFormExpl_Test
                 Assert.AreEqual("MiniExplorer", session.Title, "Nem található a MiniExplorer fejlécű ablak");
 
                 // Set implicit timeout to 1.5 seconds to make element search to retry every 500 ms for at most three times
-                session.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(1.5);
+                session.Manage().Timeouts().ImplicitWait = DefaultSessionImplicitWaitSec;
 
                 // Keep track of the edit box to be used throughout the session
                 //var editBox = session.FindElementByClassName("Edit");
@@ -84,6 +92,14 @@ namespace WinFormExpl_Test
 
             var dialog = session.AssertFindElementByName("InputDialog", "dialógus ablak");
             return dialog;
+        }
+
+        protected void openContentForFile(string fileName)
+        {
+            // Double click on a.txt in ListView
+
+            var listViewItem = session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileName}\"]/Text", "listaelem fájlnévvel");
+            listViewItem.DoubleClick();
         }
 
     }
