@@ -19,9 +19,10 @@ namespace WinFormExpl_Test
         // This setting can be overridden by the runsettings file
         //private static string AppId = @"d:\Tanszek\BZ\SZT-WinForms-Test\Feladatok\WindowsFormsApp\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe";
         private static string AppId = @"..\..\..\..\SampleSolution\WinFormExpl\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe";
+        // private static string AppId = @"..\Feladatok\WindowsFormsApp\bin\Debug\netcoreapp3.1\publish\ProjectFileForTest.exe";
         // This setting can be overridden by the runsettings file
-        protected static string rootPath = Path.GetFullPath(@"..\..\..\TestFiles");
-        protected const string subFolderName = "a.txt";
+        protected static string rootPath = @"..\..\..\TestFiles";
+        //protected static string rootPath = Path.GetFullPath(@".\TestFiles");
 
         protected const string fileA = "a.txt";
         protected const string fileB = "b.txt";
@@ -53,6 +54,7 @@ namespace WinFormExpl_Test
                 var tempRootPath = context.Properties["RootPath"];
                 if (tempRootPath != null)
                     rootPath = (string)tempRootPath;
+                rootPath = Path.GetFullPath(rootPath);
                 context.WriteLine("rootPath: " + rootPath);
 
                 // Create a new session to launch Notepad application

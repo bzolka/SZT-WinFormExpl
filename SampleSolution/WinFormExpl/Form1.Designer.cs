@@ -69,7 +69,6 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miOpen,
-            this.miRun,
             this.miExit});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 34);
@@ -81,13 +80,6 @@
             this.miOpen.Size = new System.Drawing.Size(158, 34);
             this.miOpen.Text = "Open";
             this.miOpen.Click += new System.EventHandler(this.miOpen_Click);
-            // 
-            // miRun
-            // 
-            this.miRun.Name = "miRun";
-            this.miRun.Size = new System.Drawing.Size(158, 34);
-            this.miRun.Text = "Run";
-            this.miRun.Click += new System.EventHandler(this.miRun_Click);
             // 
             // miExit
             // 

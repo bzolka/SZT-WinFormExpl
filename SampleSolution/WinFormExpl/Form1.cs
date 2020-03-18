@@ -93,12 +93,12 @@ namespace HaziWF
                 e.Graphics.FillRectangle(Brushes.Green, 0, 0, rectWidth, 5);
         }
 
-        private void miRun_Click(object sender, EventArgs e)
-        {
-            if (lvFiles.SelectedItems.Count != 1) return;
-            string fullName = ((FileInfo)lvFiles.SelectedItems[0].Tag).FullName;
-            if (fullName != null) Process.Start(fullName);
-        }
+        //private void miRun_Click(object sender, EventArgs e)
+        //{
+        //    if (lvFiles.SelectedItems.Count != 1) return;
+        //    string fullName = ((FileInfo)lvFiles.SelectedItems[0].Tag).FullName;
+        //    if (fullName != null) Process.Start(fullName);
+        //}
 
         private void miExit_Click(object sender, EventArgs e)
         {
