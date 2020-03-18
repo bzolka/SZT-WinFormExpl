@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace WinFormExpl_Test
 {
     [TestClass]
-    public class Feladat4Test : AppSession
+    public class Feladat4Test_Progressbar : AppSession
     {
         AssertElements assertElements = new AssertElements(session);
 
@@ -63,7 +63,7 @@ namespace WinFormExpl_Test
                 var delatisPanelOffset = detailsPanel.Location;
 
                 session.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(50);
-                openContentForFile(fileA);
+                OpenContentForFile(fileA);
     
                 //Thread.Sleep(200);
 
@@ -100,7 +100,6 @@ namespace WinFormExpl_Test
             {
                 session.Manage().Timeouts().ImplicitWait = DefaultSessionImplicitWaitSec;
             }
-            //  TODO-BZ, fájl újratöltés!!!
         }
 
 
@@ -108,8 +107,8 @@ namespace WinFormExpl_Test
         public void TestContentIsUpdatedAfterTimeout()
         {
             string fileName = fileA;
-            string filePath = Path.Combine(path, fileName);
-            openContentForFile(fileName);
+            string filePath = Path.Combine(rootPath, fileName);
+            OpenContentForFile(fileName);
             Thread.Sleep(300);
             var editContent = assertElements.FileContentEdit();
             string fileContentTextOriginal = File.ReadAllText(filePath);
@@ -211,7 +210,7 @@ namespace WinFormExpl_Test
             // Set path to a folder where we have some files
             InputDialog dlg = new InputDialog(session);
             dlg.OpenDialog();
-            dlg.SetEditText(path);
+            dlg.SetEditText(rootPath);
             dlg.CloseWithOk();
         }
 

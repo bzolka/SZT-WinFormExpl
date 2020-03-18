@@ -8,7 +8,7 @@ using OpenQA.Selenium.Interactions;
 namespace WinFormExpl_Test
 {
     [TestClass]
-    public class Feladat3Test: AppSession
+    public class Feladat3Test_ListViewAndInfoPanel: AppSession
     {
         AssertElements assertElements = new AssertElements(session);
 
@@ -30,9 +30,9 @@ namespace WinFormExpl_Test
             var headerSize = session.AssertFindElementByXPath("//HeaderItem[@Name=\"Size\"]", "Size fejlécű oszlop");
 
             // fileA
-            session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileA}\"]", "listaelem, fájlnév");
+            AssertFindListViewItemForFileOrDir(fileA);
             // fileB
-            session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileB}\"]", "listaelem, fájlnév");
+            AssertFindListViewItemForFileOrDir(fileB);
             // fileA size
             session.AssertFindElementByXPath($"//Text[@Name=\"{fileASize}\"]", "listaelem, méret");
             // fileB size
@@ -64,10 +64,8 @@ namespace WinFormExpl_Test
 
             var lName = session.AssertFindElementByXPath("//Text[@Name=\"b.txt\"][@AutomationId=\"lName\"]", "címke, mely a fájl nevét mutatja");
 
-            string sCreated = new FileInfo(Path.Combine(path, "b.txt")).CreationTime.ToString();
-            var lCreated = session.AssertFindElementByXPath($"//Text[@Name=\"{sCreated}\"][@AutomationId=\"lCreated\"]", "címke, mely a fájl létrehozási idejét mutatja");
-
-            
+            string sCreated = new FileInfo(Path.Combine(rootPath, "b.txt")).CreationTime.ToString();
+            session.AssertFindElementByXPath($"//Text[@Name=\"{sCreated}\"][@AutomationId=\"lCreated\"]", "címke, mely a fájl létrehozási idejét mutatja");
         }
 
         [TestMethod]
@@ -80,10 +78,10 @@ namespace WinFormExpl_Test
         void testContentForFile(string fileName)
         {
             // Double click on fileA in ListView
-            openContentForFile(fileName);
+            OpenContentForFile(fileName);
             var editContent = assertElements.FileContentEdit();
             Thread.Sleep(300);
-            string fileContentText = File.ReadAllText(Path.Combine(path, fileName));
+            string fileContentText = File.ReadAllText(Path.Combine(rootPath, fileName));
             Assert.AreEqual(fileContentText, editContent.Text, "A többsoros szövegdoboz nem jeleníti meg a fájl tartalmát");
         }
 
@@ -126,20 +124,13 @@ namespace WinFormExpl_Test
         }
 
 
-        static void InitPath()
-        {
-            // Set path to a folder where we have some files
-            InputDialog dlg = new InputDialog(session);
-            dlg.OpenDialog();
-            dlg.SetEditText(path);
-            dlg.CloseWithOk();
-        }
+
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
             Setup(context);
-            InitPath();
+            SetCurrentPathToRoot();
         }
 
         [ClassCleanup]

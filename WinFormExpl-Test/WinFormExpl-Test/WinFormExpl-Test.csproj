@@ -69,13 +69,14 @@
     <Compile Include="AppSession.cs" />
     <Compile Include="AssertFindElementExtensions.cs" />
     <Compile Include="AssertElements.cs" />
-    <Compile Include="Feladat1Test.cs" />
+    <Compile Include="Feladat1Test_Menu.cs" />
+    <Compile Include="Feladat5Test_IMSc.cs" />
     <Compile Include="InputDialog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CompareHelper.cs" />
-    <Compile Include="Feladat2Test.cs" />
-    <Compile Include="Feladat3Test.cs" />
-    <Compile Include="Feladat4Test.cs" />
+    <Compile Include="Feladat2Test_InputDialog.cs" />
+    <Compile Include="Feladat3Test_ListViewAndInfoPanel.cs" />
+    <Compile Include="Feladat4Test_Progressbar.cs" />
     <Compile Include="WindowsElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

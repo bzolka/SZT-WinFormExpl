@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define IMSc
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,12 +16,16 @@ namespace HaziWF
 {
     public partial class Form1 : Form
     {
-        int countdown = 150;
+        const int counddownInit = 120;
+        int countdown = counddownInit;
+        const int refreshIntervalSec = 4;
+        int counddownDelta;
         FileInfo loadedFile = null;
 
         public Form1()
         {
             InitializeComponent();
+            counddownDelta = counddownInit / (refreshIntervalSec * 1000 / reloadTimer.Interval);
         }
 
         private void miOpen_Click(object sender, EventArgs e)
@@ -28,49 +34,54 @@ namespace HaziWF
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 string result = dlg.Path;
-                MessageBox.Show(result);
+                // MessageBox.Show(result);
+
                 try
                 {
-                    lvFiles.Items.Clear();
-                    DirectoryInfo di = new DirectoryInfo(result);
-                    foreach (var fi in di.GetFiles())
-                    {
-
-                        ListViewItem lvi = new ListViewItem(new[] { fi.Name, fi.Length.ToString() });
-                        lvFiles.Items.Add(lvi);
-                        lvi.Tag = fi;
-                    }
+                    DirectoryInfo dirInfo = new DirectoryInfo(result);
+                    setCurrentDir(dirInfo);
                 }
-                catch { }
+                catch (Exception)
+                { }
+
             }
         }
 
         private void lvFiles_DoubleClick(object sender, EventArgs e)
         {
             if (lvFiles.SelectedItems.Count != 1) return;
+
+#if IMSc
+            if (lvFiles.SelectedItems[0].Tag is DirectoryInfo di)
+            {
+                setCurrentDir(di);
+                return;
+            }
+#endif
+
             loadedFile = (FileInfo)lvFiles.SelectedItems[0].Tag;
             tContent.Text = File.ReadAllText(loadedFile.FullName);
             reloadTimer.Start();
-            countdown = 100;
+            countdown = counddownInit;
         }
 
         private void lvFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lvFiles.SelectedItems.Count != 1) return;
-            FileInfo fi = (FileInfo)lvFiles.SelectedItems[0].Tag;
+
+            FileSystemInfo fi = (FileSystemInfo)lvFiles.SelectedItems[0].Tag;
             lName.Text = fi.Name;
             lCreated.Text = fi.CreationTime.ToString();
-
         }
 
         private void reloadTimer_Tick(object sender, EventArgs e)
         {
-            countdown--;
+            countdown -= counddownDelta;
             detailsPanel.Invalidate();
 
             if (countdown <= 0)
             {
-                countdown = 100;
+                countdown = counddownInit;
                 tContent.Text = File.ReadAllText(loadedFile.FullName);
             }
         }
@@ -91,6 +102,39 @@ namespace HaziWF
         private void miExit_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        void setCurrentDir(DirectoryInfo dirInfo)
+        {
+            try
+            {
+                lvFiles.Items.Clear();
+
+#if IMSc
+                if (dirInfo.Parent != null)
+                {
+                    ListViewItem lvi = new ListViewItem(new[] { ".." }, "<DIR>");
+                    lvFiles.Items.Add(lvi);
+                    lvi.Tag = dirInfo.Parent;
+                }
+
+                foreach (var di in dirInfo.GetDirectories())
+                {
+
+                    ListViewItem lvi = new ListViewItem(new[] { di.Name }, "<DIR>");
+                    lvFiles.Items.Add(lvi);
+                    lvi.Tag = di;
+                }
+#endif
+                foreach (var fi in dirInfo.GetFiles())
+                {
+                    ListViewItem lvi = new ListViewItem(new[] { fi.Name, fi.Length.ToString() });
+                    lvFiles.Items.Add(lvi);
+                    lvi.Tag = fi;
+                }
+
+            }
+            catch { }
         }
     }
 }

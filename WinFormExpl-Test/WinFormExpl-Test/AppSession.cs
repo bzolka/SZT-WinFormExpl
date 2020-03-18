@@ -4,6 +4,7 @@ using OpenQA.Selenium.Appium.Windows;
 using OpenQA.Selenium.Remote;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,9 +18,17 @@ namespace WinFormExpl_Test
         protected static readonly TimeSpan DefaultSessionImplicitWaitSec = TimeSpan.FromSeconds(0.1);
         // TODO-bz
         private const string AppId = @"d:\Tanszek\BZ\SZT-WinForms-Test\Feladatok\WindowsFormsApp\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe";
-        protected const string path = @"c:\temp\Watched\";    // TODO-bz, adjust path
+        // protected const string rootPath = @"c:\temp\Watched\";    // TODO-bz, adjust path
+        protected static readonly string rootPath = Path.GetFullPath(@"..\..\..\TestFiles");    // TODO-bz, adjust path
+        protected const string subFolderName = "a.txt";
+
         protected const string fileA = "a.txt";
         protected const string fileB = "b.txt";
+        protected const string fileC = "c.txt";
+        protected const string fileD = "d.txt";
+        protected const string FolderA = "FolderA";
+        protected const string FolderParent = "..";
+
         protected const string fileASize = "13";
         protected const string fileBSize = "14";
         protected const int menuItemFileWidthIn96Dpi = 37; // Can be OS dependent
@@ -46,10 +55,6 @@ namespace WinFormExpl_Test
 
                 // Set implicit timeout to 1.5 seconds to make element search to retry every 500 ms for at most three times
                 session.Manage().Timeouts().ImplicitWait = DefaultSessionImplicitWaitSec;
-
-                // Keep track of the edit box to be used throughout the session
-                //var editBox = session.FindElementByClassName("Edit");
-                //Assert.IsNotNull(editBox);
             }
         }
 
@@ -75,10 +80,6 @@ namespace WinFormExpl_Test
         [TestInitialize]
         public void TestInitialize()
         {
-            // Select all text and delete to clear the edit box
-            //editBox.SendKeys(Keys.Control + "a" + Keys.Control);
-            //editBox.SendKeys(Keys.Delete);
-            //Assert.AreEqual(string.Empty, editBox.Text);
         }
 
         protected  WindowsElement OpenDialog()
@@ -94,12 +95,41 @@ namespace WinFormExpl_Test
             return dialog;
         }
 
-        protected void openContentForFile(string fileName)
+        protected void OpenContentForFile(string fileName)
         {
             // Double click on a.txt in ListView
 
             var listViewItem = session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileName}\"]/Text", "listaelem fájlnévvel");
             listViewItem.DoubleClick();
+        }
+
+        protected static void SetCurrentPathToRoot()
+        {
+            SetCurrentPath(rootPath);
+        }
+
+        protected static void SetCurrentPath(string path)
+        {
+            // Set path to a folder where we have some files
+            using (InputDialog dlg = new InputDialog(session))
+            {
+                dlg.OpenDialog();
+                dlg.SetEditText(path);
+                dlg.CloseWithOk();
+            }
+        }
+
+        protected WindowsElement AssertFindListViewItemForFileOrDir(string fileOrDirName, bool isDir = false, string messageOverride = null)
+        {
+            return session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileOrDirName}\"]",
+                messageOverride??$"{(isDir ? "mappanevet" : "fájlnevet")} megjelenítő listaelem");
+        }
+
+        // The Text item has to be returned for double clicking
+        protected WindowsElement AssertFindListViewItem_Text_ForFileOrDir(string fileOrDirName, bool isDir = false, string messageOverride = null)
+        {
+            return session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileOrDirName}\"]/Text",
+                messageOverride ?? $"{(isDir ? "mappanevet" : "fájlnevet")} megjelenítő listaelem");
         }
 
     }

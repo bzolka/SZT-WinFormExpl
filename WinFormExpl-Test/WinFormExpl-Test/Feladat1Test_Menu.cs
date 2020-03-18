@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace WinFormExpl_Test
 {
     [TestClass]
-    public class Feladat1Test: AppSession
+    public class Feladat1Test_Menu: AppSession
     {
         [TestMethod]
         public void TestAll()

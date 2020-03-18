@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace WinFormExpl_Test
 {
-    class InputDialog
+    class InputDialog: IDisposable
     {
         WindowsDriver<WindowsElement> session;
         WindowsElement dialog;
@@ -27,7 +27,7 @@ namespace WinFormExpl_Test
             var openMenu = session.AssertFindElementByName("Open", "menü");
             openMenu.Click();
 
-            Thread.Sleep(500); // Wait for half second until the  dialog appears
+            Thread.Sleep(200); // Wait for half second until the  dialog appears
 
             dialog = session.AssertFindElementByName("InputDialog", "dialógus ablak");
             return dialog;
@@ -50,7 +50,7 @@ namespace WinFormExpl_Test
         public void SetEditText(string text)
         {
             var edit = GetEdit();
-            text = SanitizeBackslashes(text);
+            text = SanitizeSpecialKeys(text);
             edit.SendKeys(text);
         }
 
@@ -83,5 +83,33 @@ namespace WinFormExpl_Test
 
         static string SanitizeBackslashes(string input) => input.Replace("\\", Keys.Alt + Keys.NumberPad9 + Keys.NumberPad2 + Keys.Alt);
 
+        static string SanitizeSpecialKeys(string input)
+        {
+            // On a 101 hun keyboard some keys are swapped, etc.
+            // Add extra items if you run into further cases
+            return input.Replace("\\", Keys.Alt + Keys.NumberPad9 + Keys.NumberPad2 + Keys.Alt)
+                .Replace("-", Keys.Alt + Keys.NumberPad4 + Keys.NumberPad5 + Keys.Alt)
+                .Replace("y", Keys.Alt + Keys.NumberPad1 + Keys.NumberPad2 + Keys.NumberPad1 + Keys.Alt)
+                .Replace("Y", Keys.Alt + Keys.NumberPad8 + Keys.NumberPad9 + Keys.Alt)
+                .Replace("z", Keys.Alt + Keys.NumberPad1 + Keys.NumberPad2 + Keys.NumberPad2 + Keys.Alt)
+                .Replace("Z", Keys.Alt + Keys.NumberPad9 + Keys.NumberPad0 + Keys.Alt);
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                var dialog = session.AssertFindElementByName("InputDialog", "dialógus ablak");
+                // This works
+                dialog.SendKeys(Keys.Alt + Keys.F4);
+                // This works as well
+                //Actions actions = new Actions(session);
+                //actions.KeyDown(Keys.Alt);
+                //actions.SendKeys(Keys.F4);
+                //actions.KeyUp(Keys.Alt);
+                //actions.Perform();
+            }
+            catch (Exception) { }
+        }
     }
 }

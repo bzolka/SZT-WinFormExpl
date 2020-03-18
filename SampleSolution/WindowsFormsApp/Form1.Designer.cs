@@ -55,14 +55,13 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(834, 31);
+            this.menuStrip1.Size = new System.Drawing.Size(834, 36);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -73,7 +72,7 @@
             this.miRun,
             this.miExit});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 34);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // miOpen
@@ -93,14 +92,14 @@
             // miExit
             // 
             this.miExit.Name = "miExit";
-            this.miExit.Size = new System.Drawing.Size(270, 34);
+            this.miExit.Size = new System.Drawing.Size(158, 34);
             this.miExit.Text = "Exit";
             this.miExit.Click += new System.EventHandler(this.miExit_Click);
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 31);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 36);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -112,7 +111,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tContent);
             this.splitContainer1.Panel2.Controls.Add(this.detailsPanel);
-            this.splitContainer1.Size = new System.Drawing.Size(834, 497);
+            this.splitContainer1.Size = new System.Drawing.Size(834, 492);
             this.splitContainer1.SplitterDistance = 334;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 1;
@@ -127,7 +126,7 @@
             this.lvFiles.Location = new System.Drawing.Point(0, 0);
             this.lvFiles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lvFiles.Name = "lvFiles";
-            this.lvFiles.Size = new System.Drawing.Size(334, 497);
+            this.lvFiles.Size = new System.Drawing.Size(334, 492);
             this.lvFiles.TabIndex = 0;
             this.lvFiles.UseCompatibleStateImageBehavior = false;
             this.lvFiles.View = System.Windows.Forms.View.Details;
@@ -151,7 +150,7 @@
             this.tContent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tContent.Multiline = true;
             this.tContent.Name = "tContent";
-            this.tContent.Size = new System.Drawing.Size(497, 406);
+            this.tContent.Size = new System.Drawing.Size(497, 401);
             this.tContent.TabIndex = 0;
             // 
             // detailsPanel
