@@ -88,7 +88,7 @@ namespace WinFormExpl_Test
             var openMenu = session.AssertFindElementByName("Open", "menü");
             openMenu.Click();
 
-            Thread.Sleep(500); // Wait for half second until the  dialog appears
+            Thread.Sleep(200); // Wait for half second until the  dialog appears
 
             var dialog = session.AssertFindElementByName("InputDialog", "dialógus ablak");
             return dialog;

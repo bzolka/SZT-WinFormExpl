@@ -12,6 +12,8 @@ namespace WinFormExpl_Test
     [TestClass]
     public class Feladat4Test : AppSession
     {
+        AssertElements assertElements = new AssertElements(session);
+
         // Make sure to update the Current item when introducing a new year
         enum Year  { Y2020, Y2019, Y2018, Y2017, Y2016, Current = Y2020 };
 
@@ -35,7 +37,8 @@ namespace WinFormExpl_Test
         {
             // Ne vedd túl kicsire, 10 sec alattira a frissítési időt, az automata tesztben túl nagy elcsúszások
             // lesznek, pl. a kezdeti hosszmérése a progressnek már nagyon elmegy
-            { Year.Y2020, new ExpectedParams(120, 5, 12, Color.Green) },
+            // { Year.Y2020, new ExpectedParams(120, 5, 12, Color.Green) },
+            { Year.Y2020, new ExpectedParams(120, 5, 4, Color.Green) },
             { Year.Y2019, new ExpectedParams(100, 2, 10, Color.Red) },
             { Year.Y2018, new ExpectedParams(100, 2, 10, Color.Red) },
             { Year.Y2017, new ExpectedParams(100, 5, 10, Color.Green) },
@@ -44,7 +47,7 @@ namespace WinFormExpl_Test
 
 
         [TestMethod]
-        public void TestContentIsUpdatedAfterTimeout()
+        public void TestProgressbar()
         {
             //var dpi = getDPI();
             //double dpiScale1 = (double)dpi.dpiX / 96;
@@ -98,6 +101,32 @@ namespace WinFormExpl_Test
                 session.Manage().Timeouts().ImplicitWait = DefaultSessionImplicitWaitSec;
             }
             //  TODO-BZ, fájl újratöltés!!!
+        }
+
+
+        [TestMethod]
+        public void TestContentIsUpdatedAfterTimeout()
+        {
+            string fileName = fileA;
+            string filePath = Path.Combine(path, fileName);
+            openContentForFile(fileName);
+            Thread.Sleep(300);
+            var editContent = assertElements.FileContentEdit();
+            string fileContentTextOriginal = File.ReadAllText(filePath);
+            Assert.AreEqual(fileContentTextOriginal, editContent.Text, "A többsoros szövegdoboz nem jeleníti meg a fájl tartalmát");
+
+            try
+            {
+                string fileContentTextUpdated = fileContentTextOriginal + " appended text";
+                File.WriteAllText(filePath, fileContentTextUpdated);
+
+                Thread.Sleep(parametersForYears[Year.Current].Progress_IntervalSec * 1000 + 2000);
+                Assert.AreEqual(fileContentTextUpdated, editContent.Text, "A többsoros szövegdoboz nem frissíti a fájl tartalmát az frissítési intervallum lejárta után");
+            }
+            finally
+            {
+                File.WriteAllText(filePath, fileContentTextOriginal);
+            }
         }
 
         // TODO-BZ: csak oktatói gépen, jelezze, ha nem jó a szín

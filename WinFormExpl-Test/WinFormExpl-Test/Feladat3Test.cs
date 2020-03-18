@@ -82,6 +82,7 @@ namespace WinFormExpl_Test
             // Double click on fileA in ListView
             openContentForFile(fileName);
             var editContent = assertElements.FileContentEdit();
+            Thread.Sleep(300);
             string fileContentText = File.ReadAllText(Path.Combine(path, fileName));
             Assert.AreEqual(fileContentText, editContent.Text, "A többsoros szövegdoboz nem jeleníti meg a fájl tartalmát");
         }
