@@ -16,16 +16,16 @@ namespace HaziWF
 {
     public partial class Form1 : Form
     {
-        const int counddownInit = 120;
-        int countdown = counddownInit;
-        const int refreshIntervalSec = 4;
-        int counddownDelta;
+        const int MaxRectLen = 120;
+        const int RefreshIntervalSec = 4;
+        readonly int counterInitialValue;
+        int counter;
         FileInfo loadedFile = null;
 
         public Form1()
         {
             InitializeComponent();
-            counddownDelta = counddownInit / (refreshIntervalSec * 1000 / reloadTimer.Interval);
+            counterInitialValue = RefreshIntervalSec * 1000 / reloadTimer.Interval;
         }
 
         private void miOpen_Click(object sender, EventArgs e)
@@ -62,7 +62,7 @@ namespace HaziWF
             loadedFile = (FileInfo)lvFiles.SelectedItems[0].Tag;
             tContent.Text = File.ReadAllText(loadedFile.FullName);
             reloadTimer.Start();
-            countdown = counddownInit;
+            counter = counterInitialValue;
         }
 
         private void lvFiles_SelectedIndexChanged(object sender, EventArgs e)
@@ -76,20 +76,21 @@ namespace HaziWF
 
         private void reloadTimer_Tick(object sender, EventArgs e)
         {
-            countdown -= counddownDelta;
+            counter--;
             detailsPanel.Invalidate();
 
-            if (countdown <= 0)
+            if (counter <= 0)
             {
-                countdown = counddownInit;
+                counter = counterInitialValue;
                 tContent.Text = File.ReadAllText(loadedFile.FullName);
             }
         }
 
         private void detailsPanel_Paint(object sender, PaintEventArgs e)
         {
+            int rectWidth = MaxRectLen * counter / counterInitialValue;
             if (loadedFile != null)
-                e.Graphics.FillRectangle(Brushes.Green, 0, 0, countdown, 5);
+                e.Graphics.FillRectangle(Brushes.Green, 0, 0, rectWidth, 5);
         }
 
         private void miRun_Click(object sender, EventArgs e)

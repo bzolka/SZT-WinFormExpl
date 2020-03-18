@@ -84,7 +84,6 @@ namespace WinFormExpl_Test
                     "A következő frissítésig hátralevő időt jelző kitöltött téglalap kezdeti hossza nem megfelelő.");
 
                 int dLen = lenAtStart.Value - lenAfter2Sec.Value;
-
                 if (dLen == 0)
                     Assert.Fail("A következő frissítésig hátralevő időt jelző kitöltött téglalap hossza nem változik.");
 
@@ -94,6 +93,8 @@ namespace WinFormExpl_Test
                 Assert.IsTrue( Math.Abs(dLenExpected - dLen) < 10,
                     "A következő frissítésig hátralevő időt jelző kitöltött téglalap hossza nem az előírt paramétereknek megfelelően változik.");
                 
+                // TODO-bz: progressbar magasság ellenőrzése
+
                 // screenShot.SaveAsFile("screenshot1.png");
             }
             finally
@@ -127,6 +128,7 @@ namespace WinFormExpl_Test
                 File.WriteAllText(filePath, fileContentTextOriginal);
             }
         }
+
 
         // TODO-BZ: csak oktatói gépen, jelezze, ha nem jó a szín
 

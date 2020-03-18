@@ -23,6 +23,5 @@ namespace HaziWF
             InitializeComponent();
         }
 
-
     }
 }

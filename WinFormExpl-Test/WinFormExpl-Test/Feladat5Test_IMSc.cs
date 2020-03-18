@@ -12,7 +12,6 @@ namespace WinFormExpl_Test
     [TestClass]
     public class Feladat5Test_IMSc : AppSession
     {
-        static bool hasError;
         const string IMSc_MessagePrefix = "IMSc - ";
 
         // TODO-bz: assert inconclusive scope
@@ -23,6 +22,12 @@ namespace WinFormExpl_Test
             SetCurrentPathToRoot();
 
             var lvItem = AssertFindListViewItem_Text_ForFileOrDir(FolderA, true);
+        }
+
+        [TestMethod]
+        public void Test_Inconclusive()
+        {
+            Assert.Inconclusive("Dummy inconclusive");
         }
 
         [TestMethod]
