@@ -1,4 +1,4 @@
-﻿namespace HaziWF
+﻿namespace WinFormExpl
 {
 	partial class InputDialog
 	{

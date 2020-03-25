@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+// TODO-BZ: kódkomment ellenőrzés, de azt egy Roslyn-os ellenőrzőben kellene
+
 namespace WinFormExpl_Test
 {
     public class AppSession
