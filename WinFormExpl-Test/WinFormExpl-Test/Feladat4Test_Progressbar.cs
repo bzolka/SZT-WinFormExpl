@@ -41,7 +41,9 @@ namespace WinFormExpl_Test
 
             // A KEZDŐHOSSZ NE VÁLTOZZON, AZT MINDEN ÉVBEN A HALLGATÓK SZÁMÁRA MEG IS JELENÍTJÜK, HA
             // ENNEK KAPCSÁN PROBLÉMA VAN!
-            { Year.Y2020, new ExpectedParams(100, 5, 4, Color.Green) },
+            // SAJNOS ELRONTOTTAM, maradt az útmutatóban a 120 a 100 helyett, így itt is visszaírtam, 
+            // ez a hajó elment.
+            { Year.Y2020, new ExpectedParams(120, 5, 4, Color.Green) },
             { Year.Y2019, new ExpectedParams(100, 2, 10, Color.Red) },
             { Year.Y2018, new ExpectedParams(100, 2, 10, Color.Red) },
             { Year.Y2017, new ExpectedParams(100, 5, 10, Color.Green) },

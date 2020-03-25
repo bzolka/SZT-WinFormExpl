@@ -33,7 +33,8 @@ namespace WinFormExpl_Test
             {
                 // Check if the dialog can be open
                 dlg.OpenDialog();
-
+                // We had better not test with empty string, students may not think that it should be covered
+                dlg.SetEditText(rootPath);
                 dlg.CloseWithOk();
             }
         }
@@ -103,8 +104,11 @@ namespace WinFormExpl_Test
                 // Check Edit textbox
                 Assert.AreEqual(editOriginalLocation, editNewLocation,
                     "A path szövedgoboz nem megfelelően pozícionálódik az ablak átméretezésekor");
-                Assert.AreEqual(editOriginalSize.Width + offset.Width, editNewSize.Width, // This +1 is required based on tests
-                    "A path szövedgoboz nem megfelelően méreteződik az ablak átméretezésekor");
+                //Assert.AreEqual(editOriginalSize.Width + offset.Width, editNewSize.Width, // This +1 is required based on tests
+                //    "A path szövedgoboz nem megfelelően méreteződik az ablak átméretezésekor");
+                // Based on experiences, can be a bit different
+                Assert.IsTrue(Math.Abs(editOriginalSize.Width + offset.Width - editNewSize.Width) <=2,
+                     "A path szövedgoboz nem megfelelően méreteződik az ablak átméretezésekor");
                 Assert.AreEqual(editOriginalSize.Height, editNewSize.Height,
                     "A path szövedgoboz nem megfelelően méreteződik az ablak átméretezésekor");
 

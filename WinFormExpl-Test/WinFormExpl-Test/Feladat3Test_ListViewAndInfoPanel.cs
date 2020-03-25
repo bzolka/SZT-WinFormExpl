@@ -110,14 +110,16 @@ namespace WinFormExpl_Test
             Thread.Sleep(500);
 
             var listViewNewSize = listView.Size;
+            
+            double panelRatio = (double)listViewOriginalSize.Width / (editContentOriginalSize.Width + listViewOriginalSize.Width);
             Assert.IsTrue(
-                listViewNewSize.Width >= listViewOriginalSize.Width + offset.Width/2 - 15  && listViewNewSize.Width <= listViewOriginalSize.Width + offset.Width / 2 + 15 &&
+                listViewNewSize.Width >= listViewOriginalSize.Width + (int)(offset.Width* panelRatio) - 15  && listViewNewSize.Width <= listViewOriginalSize.Width + (int)(offset.Width * panelRatio) + 15 &&
                 listViewNewSize.Height >= listViewOriginalSize.Height + offset.Height -5 && listViewNewSize.Height <= listViewOriginalSize.Height + offset.Height + 5,
                 "A fájlmegjelenítő lista nem méreteződik az ablakkal");
 
             var editContentNewSize = editContent.Size;
             Assert.IsTrue(
-                editContentNewSize.Width >= editContentOriginalSize.Width + offset.Width / 2 - 15 && editContentNewSize.Width <= editContentOriginalSize.Width + offset.Width / 2 + 15 &&
+                editContentNewSize.Width >= editContentOriginalSize.Width + (int)(offset.Width * (1- panelRatio)) - 15 && editContentNewSize.Width <= editContentOriginalSize.Width + (int)(offset.Width * (1- panelRatio)) + 15 &&
                 editContentNewSize.Height >= editContentOriginalSize.Height + offset.Height - 5 && editContentNewSize.Height <= editContentOriginalSize.Height + offset.Height + 5,
                 "A fájltartalom megjelenítő szövegdoboz nem méreteződik az ablakkal");
         }
