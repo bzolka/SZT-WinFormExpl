@@ -16,7 +16,7 @@ namespace WinFormExpl
 {
     public partial class Form1 : Form
     {
-        const int MaxRectLen = 120;
+        const int MaxRectLen = 100;
         const int RefreshIntervalSec = 4;
         readonly int counterInitialValue;
         int counter;

@@ -14,8 +14,6 @@ namespace WinFormExpl_Test
     {
         const string IMSc_MessagePrefix = "IMSc - ";
 
-        // TODO-bz: assert inconclusive scope
-
         [TestMethod]
         public void TestDirsDisplayed()
         {

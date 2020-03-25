@@ -88,14 +88,13 @@ namespace WinFormExpl_Test
         [TestMethod]
         public void TestRun()
         {
-            // TODO-bz
+            // Ezt idén kihagyjuk, .NET Core-ban más, a feladatsorból is kikerült
 
         }
 
         [TestMethod]
         public void TestDock()
         {
-            // TODO-bz
             var listView = assertElements.FileListView();
             var listViewOriginalSize = listView.Size;
 

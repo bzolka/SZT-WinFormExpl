@@ -38,7 +38,10 @@ namespace WinFormExpl_Test
             // Ne vedd túl kicsire, 10 sec alattira a frissítési időt, az automata tesztben túl nagy elcsúszások
             // lesznek, pl. a kezdeti hosszmérése a progressnek már nagyon elmegy
             // { Year.Y2020, new ExpectedParams(120, 5, 12, Color.Green) },
-            { Year.Y2020, new ExpectedParams(120, 5, 4, Color.Green) },
+
+            // A KEZDŐHOSSZ NE VÁLTOZZON, AZT MINDEN ÉVBEN A HALLGATÓK SZÁMÁRA MEG IS JELENÍTJÜK, HA
+            // ENNEK KAPCSÁN PROBLÉMA VAN!
+            { Year.Y2020, new ExpectedParams(100, 5, 4, Color.Green) },
             { Year.Y2019, new ExpectedParams(100, 2, 10, Color.Red) },
             { Year.Y2018, new ExpectedParams(100, 2, 10, Color.Red) },
             { Year.Y2017, new ExpectedParams(100, 5, 10, Color.Green) },
@@ -79,7 +82,7 @@ namespace WinFormExpl_Test
                 if (!lenAtStart.HasValue || !lenAfter2Sec.HasValue)
                     Assert.Fail("Nem található a következő frissítésig hátralevő időt jelző kitöltött téglalap.");
 
-                // TODO-BZ: Csak oktatói gépen (bár ezt plugizálás nélkül is elronthatja!)
+                // Ez minden évben ugyanaz a tervek szerint, mehet a hallgatók felé is a visszajelzés
                 Assert.IsTrue(Math.Abs(expectedProgress_Width_InPixels - lenAtStart.Value) < 15,
                     "A következő frissítésig hátralevő időt jelző kitöltött téglalap kezdeti hossza nem megfelelő.");
 
@@ -87,13 +90,13 @@ namespace WinFormExpl_Test
                 if (dLen == 0)
                     Assert.Fail("A következő frissítésig hátralevő időt jelző kitöltött téglalap hossza nem változik.");
 
-                // TODO-BZ: Csak oktatói gépen (bár ezt plugizálás nélkül is elronthatja!)
+                // TODO-BZ: Téglalap hossz változás (csak oktatói környezetben, plugizálás ellenőrzésre), bár ezt plugizálás nélkül is elronthatja!
                 // Check if progress delta is about the expected value
-                var dLenExpected = expectedProgress_Width_InPixels * sleepIntervalMS / (parameters.Progress_IntervalSec * 1000);
-                Assert.IsTrue( Math.Abs(dLenExpected - dLen) < 10,
-                    "A következő frissítésig hátralevő időt jelző kitöltött téglalap hossza nem az előírt paramétereknek megfelelően változik.");
+                //var dLenExpected = expectedProgress_Width_InPixels * sleepIntervalMS / (parameters.Progress_IntervalSec * 1000);
+                //Assert.IsTrue( Math.Abs(dLenExpected - dLen) < 10,
+                //    "A következő frissítésig hátralevő időt jelző kitöltött téglalap hossza nem az előírt paramétereknek megfelelően változik.");
                 
-                // TODO-bz: progressbar magasság ellenőrzése
+                // TODO-bz: progressbar magasság ellenőrzése (csak oktatói környezetben, plugizálás ellenőrzésre)
 
                 // screenShot.SaveAsFile("screenshot1.png");
             }
@@ -130,7 +133,7 @@ namespace WinFormExpl_Test
         }
 
 
-        // TODO-BZ: csak oktatói gépen, jelezze, ha nem jó a szín
+        // TODO-BZ: jelezze, ha nem jó a szín (csak oktatói környezetben, plugizálás ellenőrzésre)
 
 
         // Returns null if no progressbar found
