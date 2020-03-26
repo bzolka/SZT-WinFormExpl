@@ -115,15 +115,15 @@ namespace WinFormExpl_Test
                 // Check OK button
                 Assert.AreEqual(okOriginalLocation.X, okNewLocation.X,
                    "Az OK gomb pozíciója (X koordináta) nem megfelelő az ablak átméretezésekor");
-                Assert.AreEqual(okOriginalLocation.Y + offset.Height, okNewLocation.Y,
+                Assert.IsTrue(Math.Abs(okOriginalLocation.Y + offset.Height - okNewLocation.Y) <= 2,
                     "Az OK gomb pozíciója (Y koordináta) nem megfelelő az ablak átméretezésekor");
                 Assert.AreEqual(okOriginalSize, okNewSize,
                     "Az OK gomb mérete nem megfelelő az ablak átméretezésekor");
 
                 // Check Cancel button
-                Assert.AreEqual(cancelOriginalLocation.X + offset.Width, cancelNewLocation.X, // This +1 is required based on tests,
+                Assert.IsTrue(Math.Abs(cancelOriginalLocation.X + offset.Width - cancelNewLocation.X) <= 2, // This +1 is required based on tests,
                     "A Cancel gomb pozíciója (X koordináta) nem megfelelő az ablak átméretezésekor");
-                Assert.AreEqual(cancelOriginalLocation.Y + offset.Height, cancelNewLocation.Y,
+                Assert.IsTrue(Math.Abs(cancelOriginalLocation.Y + offset.Height - cancelNewLocation.Y) <= 2,
                     "A Cancel gomb pozíciója (Y koordináta) nem megfelelő az ablak átméretezésekor");
                 Assert.AreEqual(cancelOriginalSize, cancelNewSize,
                     "A Cancel gomb mérete nem megfelelő az ablak átméretezésekor");

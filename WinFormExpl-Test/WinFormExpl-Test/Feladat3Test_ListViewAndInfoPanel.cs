@@ -54,18 +54,21 @@ namespace WinFormExpl_Test
 
 
         }
-
+        
         [TestMethod]
         public void TestInfoPanel()
         {
             // select b.txt in ListView
             var listViewItem = session.AssertFindElementByXPath("//ListItem[@Name=\"b.txt\"]/Text", "listaelem fájlnévvel");
             listViewItem.Click();
-
-            var lName = session.AssertFindElementByXPath("//Text[@Name=\"b.txt\"][@AutomationId=\"lName\"]", "címke, mely a fájl nevét mutatja");
+            // Erre szükség van?
+            
+            var lName = session.AssertFindElementByXPath("//Text[@Name=\"b.txt\"][@AutomationId=\"lName\"]", "Olyan címke, mely a listában kiválasztott fájl nevét mutatja. Vagy ha létezik a címke, " +
+                "akkor az nem az aktuálisan kiválasztott fájl nevét jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl nevét!");
 
             string sCreated = new FileInfo(Path.Combine(rootPath, "b.txt")).CreationTime.ToString();
-            session.AssertFindElementByXPath($"//Text[@Name=\"{sCreated}\"][@AutomationId=\"lCreated\"]", "címke, mely a fájl létrehozási idejét mutatja");
+            session.AssertFindElementByXPath($"//Text[@Name=\"{sCreated}\"][@AutomationId=\"lCreated\"]", "Olyan címke, mely a listában kiválasztott fájl létrehozási dátumát mutatja. Vagy ha létezik a címke, " +
+                "akkor az nem az aktuálisan kiválasztott fájl létrehozási dátumát jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl létrehozási dátumát.");
         }
 
         [TestMethod]
