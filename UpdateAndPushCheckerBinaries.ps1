@@ -4,7 +4,7 @@ Push-Location -Path "..\winforms-hf-uitest-binaries"
 try {
     git add -A
     git status
-    $diff = git diff | Out-String
+    $diff = git diff --cached | Out-String
     if ($diff -eq "")
     {
         Write-Host "Nothing to commit, exiting..."
