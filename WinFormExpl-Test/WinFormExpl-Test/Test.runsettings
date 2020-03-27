@@ -2,7 +2,7 @@
 <RunSettings>
   <!-- Parameters used by tests at run time -->
   <TestRunParameters>
-    <!--<Parameter name="AppId" value="d:\temp\SZT\tempTest3\hazi3-2020-MrazGergo\Feladatok\WinFormExpl\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe" />-->
+    <!--<Parameter name="AppId" value="d:\temp\SZT\tempTest3\hazi3-2020-hrakof\Feladatok\WinFormExpl\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe" />-->
     <Parameter name="AppId" value="..\..\..\..\SampleSolution\WinFormExpl\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe" />
     <Parameter name="RootPath" value="..\..\..\TestFiles" />
   </TestRunParameters>

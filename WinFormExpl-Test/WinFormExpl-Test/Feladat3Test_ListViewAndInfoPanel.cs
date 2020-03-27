@@ -16,6 +16,8 @@ namespace WinFormExpl_Test
         [TestMethod]
         public void TestSplitter()
         {
+            // Volt olyan hallgatói megoldás, ahol ez nagy DPI-n nálam elesett, de 
+            // sima full hd-n nem! De aztán visszatéve uhd/nagy dpi-be, WinAppDriver újraindítva már megtalálta!
             // TODO-bz, ez csak akkor működik, ha nem nevezte át? 
             session.AssertFindElementByXPath("//Pane[starts-with(@AutomationId,\"splitContainer\")]", "Splitter");
         }

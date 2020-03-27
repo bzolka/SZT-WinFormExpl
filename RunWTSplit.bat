@@ -1,0 +1,1 @@
+start wt -p "powershell" -d ..\Work ; split-pane -p "powershell" -d . -V ; split-pane -p "powershell" -d . -H

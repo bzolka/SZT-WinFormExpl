@@ -82,7 +82,8 @@ namespace WinFormExpl_Test
                 int? lenAfter2Sec = getProgressBarLength(session.GetScreenshot().AsByteArray, delatisPanelOffset);
 
                 if (!lenAtStart.HasValue || !lenAfter2Sec.HasValue)
-                    Assert.Fail("Nem található a következő frissítésig hátralevő időt jelző kitöltött téglalap.");
+                    Assert.Fail("Nem található a következő frissítésig hátralevő időt jelző kitöltött téglalap. A problémát az is okozhatja, hogy a detailsPanel poziciomnálása nem " +
+                        "megfelelő, pl. nincs a Dock tulajdonsága Top-ra állítva.");
 
                 // Ez minden évben ugyanaz a tervek szerint, mehet a hallgatók felé is a visszajelzés
                 Assert.IsTrue(Math.Abs(expectedProgress_Width_InPixels - lenAtStart.Value) < 15,
@@ -147,10 +148,11 @@ namespace WinFormExpl_Test
                 // Verify that the element screenshot has a valid size
                 Bitmap image = (Bitmap)Image.FromStream(msScreenshot);
 
+       
                 Color backgroundColor = image.GetPixel(delatisPanelOffset.X, delatisPanelOffset.Y + 20);
                 int x = delatisPanelOffset.X + 1;
                 int y = delatisPanelOffset.Y + 2;
-                int maxLen = image.Width;
+                int maxX = image.Width - 1;
 
                 //image.Save("screenshot2.png", ImageFormat.Png);
 
@@ -167,7 +169,7 @@ namespace WinFormExpl_Test
 
                 while (image.GetPixel(x, y) != backgroundColor)
                 {
-                    if (x == maxLen)
+                    if (x == maxX)
                         return null;
                     x++;
                 }
