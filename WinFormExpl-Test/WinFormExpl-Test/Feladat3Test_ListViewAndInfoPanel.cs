@@ -36,9 +36,11 @@ namespace WinFormExpl_Test
             // fileB
             AssertFindListViewItemForFileOrDir(fileB);
             // fileA size
-            session.AssertFindElementByXPath($"//Text[contains(@Name,\"{fileASize}\")]", "listaelem, méret");
+            session.AssertFindElementByXPath($"//Text[contains(@Name,\"{fileASize}\")]", "listaelem, méret (a listában a Size oszlopban listaelemek nincsenek" +
+                " kitöltve, vagy nem a méretet jelenítik meg, vagy nem jó formátumban jelenítik meg)");
             // fileB size
-            session.AssertFindElementByXPath($"//Text[contains(@Name,\"{fileBSize}\")]", "listaelem, méret");
+            session.AssertFindElementByXPath($"//Text[contains(@Name,\"{fileBSize}\")]", "listaelem, méret (a listában a Size oszlopban listaelemek nincsenek" +
+                " kitöltve, vagy nem a méretet jelenítik meg, vagy nem jó formátumban jelenítik meg)");
 
             //var elements = session.FindElementsByXPath("//*");
             // session.AssertFindElementByXPath("/ListItem[@T=\"a.txt\"]", "alma");
