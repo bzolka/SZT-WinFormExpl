@@ -36,9 +36,9 @@ namespace WinFormExpl_Test
             // fileB
             AssertFindListViewItemForFileOrDir(fileB);
             // fileA size
-            session.AssertFindElementByXPath($"//Text[@Name=\"{fileASize}\"]", "listaelem, méret");
+            session.AssertFindElementByXPath($"//Text[contains(@Name,\"{fileASize}\")]", "listaelem, méret");
             // fileB size
-            session.AssertFindElementByXPath($"//Text[@Name=\"{fileBSize}\"]", "listaelem, méret");
+            session.AssertFindElementByXPath($"//Text[contains(@Name,\"{fileBSize}\")]", "listaelem, méret");
 
             //var elements = session.FindElementsByXPath("//*");
             // session.AssertFindElementByXPath("/ListItem[@T=\"a.txt\"]", "alma");
@@ -66,21 +66,41 @@ namespace WinFormExpl_Test
             // Erre szükség van?
 
             var lName = session.AssertFindElementByXPath("//Text[contains(@Name,\"b.txt\")][@AutomationId=\"lName\"]", "Olyan címke, mely a listában kiválasztott fájl nevét mutatja. Vagy ha létezik a címke, " +
-                "akkor az nem az aktuálisan kiválasztott fájl nevét jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl nevét!");
+                "akkor az nem az aktuálisan kiválasztott fájl nevét jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl nevét! " +
+                "Szintén probléma lehet, ha a fájl nevét nem egy lName nevű Label jelenítni meg.");
 
             //var lName = session.AssertFindElementByXPath("//Text[@Name=\"b.txt\"][@AutomationId=\"lName\"]", "Olyan címke, mely a listában kiválasztott fájl nevét mutatja. Vagy ha létezik a címke, " +
             //    "akkor az nem az aktuálisan kiválasztott fájl nevét jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl nevét!");
 
             string sCreated = new FileInfo(Path.Combine(rootPath, "b.txt")).CreationTime.ToString();
             session.AssertFindElementByXPath($"//Text[contains(@Name,\"{sCreated}\")][@AutomationId=\"lCreated\"]", "Olyan címke, mely a listában kiválasztott fájl létrehozási dátumát mutatja. Vagy ha létezik a címke, " +
-                "akkor az nem az aktuálisan kiválasztott fájl létrehozási dátumát jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl létrehozási dátumát.");
+                "akkor az nem az aktuálisan kiválasztott fájl létrehozási dátumát jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl létrehozási dátumát." +
+                " Szintén probléma lehet, ha a fájl létrehozás dátumát nem egy lCreated nevű Label jelenítni meg.");
         }
 
         [TestMethod]
         public void TestContentView()
         {
+            testSelectionDoesNotChangeContent();
             testContentForFile(fileA);
             testContentForFile(fileB);
+        }
+
+        void testSelectionDoesNotChangeContent()
+        {
+            var editContent = assertElements.FileContentEdit();
+
+            var listViewItemA = session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileA}\"]/Text", "listaelem fájlnévvel");
+            listViewItemA.Click(); //Valahol, mintha írták volna, hogy erre szükség lehet!
+            listViewItemA.DoubleClick();
+            string editContentTextBeforeClick = editContent.Text;
+
+            var listViewItemB = session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileB}\"]/Text", "listaelem fájlnévvel");
+            listViewItemB.Click();
+            string editContentTextAfterClick = editContent.Text;
+
+            Assert.AreEqual(editContentTextBeforeClick, editContentTextAfterClick, "A többsoros szövegdoboz (tContent) tartalma akkor is megváltozik, ha " +
+                " a listviewban új fájl kerül kiválasztásra. Csak akkor szabad megváltoznia, ha a felhasználó duplán kattint az egérrel egy fájlon.");
         }
 
         void testContentForFile(string fileName)
@@ -109,6 +129,9 @@ namespace WinFormExpl_Test
             var editContent = assertElements.FileContentEdit();
             var editContentOriginalSize = editContent.Size;
 
+            var detailsPanel = session.AssertFindElementByXPath("//Pane[@AutomationId=\"detailsPanel\"]", "detailsPanel nevű panel");
+            int detailsPanelOriginalHeight = detailsPanel.Size.Height;
+
             var windowSize = session.Manage().Window.Size;
 
             var offset = new Size(100, 120);
@@ -116,6 +139,8 @@ namespace WinFormExpl_Test
             // Resize main window
             session.Manage().Window.Size = new Size(windowSize.Width + offset.Width, windowSize.Height + offset.Height);
             Thread.Sleep(500);
+
+            Assert.AreEqual(detailsPanelOriginalHeight, detailsPanel.Size.Height, "Ablak átméretezés után a details panel magassága megváltozott.");
 
             var listViewNewSize = listView.Size;
             
@@ -129,7 +154,7 @@ namespace WinFormExpl_Test
             Assert.IsTrue(
                 editContentNewSize.Width >= editContentOriginalSize.Width + (int)(offset.Width * (1- panelRatio)) - 15 && editContentNewSize.Width <= editContentOriginalSize.Width + (int)(offset.Width * (1- panelRatio)) + 15 &&
                 editContentNewSize.Height >= editContentOriginalSize.Height + offset.Height - 5 && editContentNewSize.Height <= editContentOriginalSize.Height + offset.Height + 5,
-                "A fájltartalom megjelenítő szövegdoboz nem méreteződik az ablakkal");
+                "A fájltartalom megjelenítő szövegdoboz nem jól méreteződik az ablakkal. A probléma oka lehet az is, hogy a details panel nem fix magasságú (nincs Top módon dokkolva).");
         }
 
 

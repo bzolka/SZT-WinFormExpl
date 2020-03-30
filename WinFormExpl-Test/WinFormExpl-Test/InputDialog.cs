@@ -50,6 +50,7 @@ namespace WinFormExpl_Test
         public void SetEditText(string text)
         {
             var edit = GetEdit();
+            edit.SendKeys(Keys.Control + "a");
             text = SanitizeSpecialKeys(text);
             edit.SendKeys(text);
         }

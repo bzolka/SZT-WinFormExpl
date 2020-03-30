@@ -87,7 +87,8 @@ namespace WinFormExpl_Test
 
                 // Ez minden évben ugyanaz a tervek szerint, mehet a hallgatók felé is a visszajelzés
                 Assert.IsTrue(Math.Abs(expectedProgress_Width_InPixels - lenAtStart.Value) < 15,
-                    "A következő frissítésig hátralevő időt jelző kitöltött téglalap kezdeti hossza nem megfelelő.");
+                    "A következő frissítésig hátralevő időt jelző kitöltött téglalap kezdeti hossza nem megfelelő. A problémát az is okozhatja, ha a tartalom megjelenítő nem " +
+                    "egér duplakattintás eseményre, hanem új listaelem kiválasztás eseményre frissül.");
 
                 int dLen = lenAtStart.Value - lenAfter2Sec.Value;
                 if (dLen == 0)
@@ -149,7 +150,7 @@ namespace WinFormExpl_Test
                 Bitmap image = (Bitmap)Image.FromStream(msScreenshot);
 
        
-                Color backgroundColor = image.GetPixel(delatisPanelOffset.X, delatisPanelOffset.Y + 20);
+                
                 int x = delatisPanelOffset.X + 1;
                 int y = delatisPanelOffset.Y + 2;
                 int maxX = image.Width - 1;
@@ -167,15 +168,50 @@ namespace WinFormExpl_Test
 
                 //    }
 
-                while (image.GetPixel(x, y) != backgroundColor)
+                int? xFound = null;
+                Color backgroundColor;
+
+                //// 1. try it with sampling a pixel that is probably of background color
+                backgroundColor = image.GetPixel(delatisPanelOffset.X, delatisPanelOffset.Y + 20);
+                int argb0 = backgroundColor.ToArgb();
+                xFound = tryFindForBackgroundColor(image, backgroundColor, x, maxX, y);
+
+                //backgroundColor = SystemColors.Control;
+                //int argb1 = backgroundColor.ToArgb();
+                //xFound = tryFindForBackgroundColor(image, backgroundColor, x, maxX, y);
+
+                // 2. If not found, try to find with a typical fixed background color
+                if (!xFound.HasValue)
                 {
-                    if (x == maxX)
-                        return null;
-                    x++;
+                    backgroundColor = Color.FromArgb(240, 240, 240);
+                    xFound = tryFindForBackgroundColor(image, backgroundColor, x, maxX, y);
+
                 }
-                    
-                return x - delatisPanelOffset.X;
+                // 3. If not found, try to find with SystemColors.Control
+                if (!xFound.HasValue)
+                {
+                    backgroundColor = SystemColors.Control;
+                    xFound = tryFindForBackgroundColor(image, backgroundColor, x, maxX, y);
+
+                }
+
+                if (xFound.HasValue)
+                    return xFound - delatisPanelOffset.X;
+                else
+                    return null;
             }
+        }
+
+        int? tryFindForBackgroundColor(Bitmap image, Color backgroundColor, int startX, int maxX, int y)
+        {
+            int x = startX;
+            while (image.GetPixel(x, y).ToArgb() != backgroundColor.ToArgb()) // ToArgb is important to comapre only the color (ARGB) members
+            {
+                if (x == maxX)
+                    return null;
+                x++;
+            }
+            return x;
         }
 
         double getDpiScaleFactor()
