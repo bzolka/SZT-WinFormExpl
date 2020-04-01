@@ -4,6 +4,8 @@
   <TestRunParameters>
     <Parameter name="AppId" value="..\..\..\..\..\Work\hallg-mo\Feladatok\WinFormExpl\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe" />
     <!--<Parameter name="AppId" value="..\..\..\..\SampleSolution\WinFormExpl\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe" />-->
+    <!--<Parameter name="AppId" value="..\..\..\..\..\SZT-WinForms-Test\Feladatok\WinFormExpl\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe" />-->
+
     <Parameter name="RootPath" value="..\..\..\TestFiles" />
   </TestRunParameters>
 </RunSettings>

@@ -65,7 +65,6 @@ namespace WinFormExpl_Test
             // select b.txt in ListView
             var listViewItem = session.AssertFindElementByXPath("//ListItem[@Name=\"b.txt\"]/Text", "listaelem fájlnévvel");
             listViewItem.Click();
-            // Erre szükség van?
 
             var lName = session.AssertFindElementByXPath("//Text[contains(@Name,\"b.txt\")][@AutomationId=\"lName\"]", "Olyan címke, mely a listában kiválasztott fájl nevét mutatja. Vagy ha létezik a címke, " +
                 "akkor az nem az aktuálisan kiválasztott fájl nevét jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl nevét! " +
@@ -93,7 +92,7 @@ namespace WinFormExpl_Test
             var editContent = assertElements.FileContentEdit();
 
             var listViewItemA = session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileA}\"]/Text", "listaelem fájlnévvel");
-            listViewItemA.Click(); //Valahol, mintha írták volna, hogy erre szükség lehet!
+            listViewItemA.Click(); // Valahol, mintha írták volna, hogy erre szükség lehet!
             listViewItemA.DoubleClick();
             string editContentTextBeforeClick = editContent.Text;
 
@@ -134,13 +133,27 @@ namespace WinFormExpl_Test
             var detailsPanel = session.AssertFindElementByXPath("//Pane[@AutomationId=\"detailsPanel\"]", "detailsPanel nevű panel");
             int detailsPanelOriginalHeight = detailsPanel.Size.Height;
 
-            var windowSize = session.Manage().Window.Size;
+            var originalWindowSize = session.Manage().Window.Size;
 
-            var offset = new Size(100, 120);
+            // Do not increase size: that could exceed desktop size. Decreasing is safer.
+            var offset = new Size(-100, -120);
 
             // Resize main window
-            session.Manage().Window.Size = new Size(windowSize.Width + offset.Width, windowSize.Height + offset.Height);
+            var newWindowSize = new Size(originalWindowSize.Width + offset.Width, originalWindowSize.Height + offset.Height);
+            session.Manage().Window.Size = newWindowSize;
             Thread.Sleep(500);
+
+            // Check if main window could actually be resized
+            var actualWindowSize = session.Manage().Window.Size;
+            const int resizeErrorMargin = 5;
+            if (actualWindowSize.Width < newWindowSize.Width - resizeErrorMargin || actualWindowSize.Width > newWindowSize.Width + resizeErrorMargin
+                || actualWindowSize.Height < newWindowSize.Height - resizeErrorMargin || actualWindowSize.Height > newWindowSize.Height + resizeErrorMargin)
+            {
+                Assert.Fail("Valamilyen nem várt okból az ablak mérete nem változott meg átméretezéskor, " +
+                  "lehet GitHub környezeti probléma miatt, vagy mert túl nagy/kicsi az ablak alapmérete" +
+                  $" (Benedek Zoltán felé jelezd kérlek a problémát). Várt méret: {newWindowSize}, aktuális méret: {actualWindowSize}");
+            }
+
 
             Assert.AreEqual(detailsPanelOriginalHeight, detailsPanel.Size.Height, "Ablak átméretezés után a details panel magassága megváltozott.");
 
