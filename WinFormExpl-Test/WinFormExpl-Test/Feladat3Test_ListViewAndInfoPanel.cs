@@ -68,7 +68,7 @@ namespace WinFormExpl_Test
 
             var lName = session.AssertFindElementByXPath("//Text[contains(@Name,\"b.txt\")][@AutomationId=\"lName\"]", "Olyan címke, mely a listában kiválasztott fájl nevét mutatja. Vagy ha létezik a címke, " +
                 "akkor az nem az aktuálisan kiválasztott fájl nevét jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl nevét! " +
-                "Szintén probléma lehet, ha a fájl nevét nem egy lName nevű Label jelenítni meg.");
+                "Szintén probléma lehet, ha a fájl nevét nem egy lName nevű Label jelenítni meg. A címke neve lName kell legyen (melyben a prefix kicsi 'l', a labelre utalva, és nem nagy 'I', mint Ibolya)");
 
             //var lName = session.AssertFindElementByXPath("//Text[@Name=\"b.txt\"][@AutomationId=\"lName\"]", "Olyan címke, mely a listában kiválasztott fájl nevét mutatja. Vagy ha létezik a címke, " +
             //    "akkor az nem az aktuálisan kiválasztott fájl nevét jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl nevét!");
