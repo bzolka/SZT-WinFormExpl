@@ -73,7 +73,7 @@ namespace WinFormExpl_Test
                 var okOriginalSize = ok.Size;
                 var cancelOriginalSize = cancel.Size;
 
-                var offset = new Size(100, 120);
+                var offset = new Size(20, 30);
 
                 // This did not work, maybe it tries to set size for the main window
                 // session.Manage().Window.Size = new Size(dlgSize.Width + offset.Width, dlgSize.Height + offset.Height);
@@ -103,7 +103,8 @@ namespace WinFormExpl_Test
 
                 // Check Edit textbox
                 Assert.AreEqual(editOriginalLocation, editNewLocation,
-                    "A path szövedgoboz nem megfelelően pozícionálódik az ablak átméretezésekor (csak a szélessége változhat, a helye nem)");
+                    "A path szövedgoboz nem megfelelően pozícionálódik az ablak átméretezésekor: csak a szélessége változhat, a helye nem." +
+                    "(Esetleg az is problémát okozhat, hogy túl nagy az InputDialog ablak, próbáld kisebbre méretezni).");
                 //Assert.AreEqual(editOriginalSize.Width + offset.Width, editNewSize.Width, // This +1 is required based on tests
                 //    "A path szövedgoboz nem megfelelően méreteződik az ablak átméretezésekor");
                 // Based on experiences, can be a bit different

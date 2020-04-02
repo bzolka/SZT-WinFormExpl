@@ -18,7 +18,8 @@ namespace WinFormExpl_Test
             }
             catch (InvalidOperationException)
             {
-                Assert.Fail($"Nem található a következő felületelem: {name} {elementType}");
+                Assert.Fail($"Nem található a következő felületelem: {name} {elementType}. (Az is problémát okozhat, ha a vezérlő AccessibleName tulajdonságát is állítottad: " +
+                    $"ha így történt, nyisd meg a megfelelő designer.cs forrásfájlt, és töröld ki azokat a sorokat, melyek az AccessibleName tulajdonságot állítják)");
                 throw; // Needed to reassure the compiler
             }
         }
@@ -31,8 +32,8 @@ namespace WinFormExpl_Test
             }
             catch (InvalidOperationException)
             {
-                Assert.Fail($"Nem található a következő felületelem: {elementDescription}");
-                throw; // Needed to reassure the compiler
+                Assert.Fail($"Nem található a következő felületelem: {elementDescription}. (Az is problémát okozhat, ha a vezérlő AccessibleName tulajdonságát is állítottad: " +
+                    $"ha így történt, nyisd meg a megfelelő designer.cs forrásfájlt, és töröld ki azokat a sorokat, melyek az AccessibleName tulajdonságot állítják)"); throw; // Needed to reassure the compiler
             }
         }
 
@@ -49,7 +50,8 @@ namespace WinFormExpl_Test
                 {
                 }
             }
-            Assert.Fail($"Nem található a következő felületelem: {names[0]} {elemetType}");
+            Assert.Fail($"Nem található a következő felületelem: {names[0]} {elemetType} (Az is problémát okozhat, ha a vezérlő AccessibleName tulajdonságát is állítottad: " +
+                    $"ha így történt, nyisd meg a megfelelő designer.cs forrásfájlt, és töröld ki azokat a sorokat, melyek az AccessibleName tulajdonságot állítják)");
             throw new Exception("never get here"); // Needed to reassure the compiler
         }
 
