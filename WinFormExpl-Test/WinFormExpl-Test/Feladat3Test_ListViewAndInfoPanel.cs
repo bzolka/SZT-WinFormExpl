@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium.Appium.Windows;
 using OpenQA.Selenium.Interactions;
 
 namespace WinFormExpl_Test
@@ -135,9 +136,23 @@ namespace WinFormExpl_Test
 
             var originalWindowSize = session.Manage().Window.Size;
 
-            // Do not increase size: that could exceed desktop size. Decreasing is safer.
-            var offset = new Size(-100, -120);
+            // First, test by increasing the window. This may fail if original window size is very larga, as new size may exceed the available desktop space
+            var offset = new Size(50, 60);
+            try
+            {
+                testResize(listView, listViewOriginalSize, editContent, editContentOriginalSize, detailsPanel, detailsPanelOriginalHeight, originalWindowSize, offset);
+            } 
+            catch (Exception)
+            {
+                offset = new Size(-50, -60);
+                //  If failed, try by decresing the window size (his may fail if original window size is very small, or controls on it (textbox) are very small)
+                testResize(listView, listViewOriginalSize, editContent, editContentOriginalSize, detailsPanel, detailsPanelOriginalHeight, originalWindowSize, offset);
+            }
 
+        }
+
+        private static void testResize(WindowsElement listView, Size listViewOriginalSize, WindowsElement editContent, Size editContentOriginalSize, WindowsElement detailsPanel, int detailsPanelOriginalHeight, Size originalWindowSize, Size offset)
+        {
             // Resize main window
             var newWindowSize = new Size(originalWindowSize.Width + offset.Width, originalWindowSize.Height + offset.Height);
             session.Manage().Window.Size = newWindowSize;
@@ -158,22 +173,19 @@ namespace WinFormExpl_Test
             Assert.AreEqual(detailsPanelOriginalHeight, detailsPanel.Size.Height, "Ablak átméretezés után a details panel magassága megváltozott.");
 
             var listViewNewSize = listView.Size;
-            
+
             double panelRatio = (double)listViewOriginalSize.Width / (editContentOriginalSize.Width + listViewOriginalSize.Width);
             Assert.IsTrue(
-                listViewNewSize.Width >= listViewOriginalSize.Width + (int)(offset.Width* panelRatio) - 15  && listViewNewSize.Width <= listViewOriginalSize.Width + (int)(offset.Width * panelRatio) + 15 &&
-                listViewNewSize.Height >= listViewOriginalSize.Height + offset.Height -5 && listViewNewSize.Height <= listViewOriginalSize.Height + offset.Height + 5,
+                listViewNewSize.Width >= listViewOriginalSize.Width + (int)(offset.Width * panelRatio) - 15 && listViewNewSize.Width <= listViewOriginalSize.Width + (int)(offset.Width * panelRatio) + 15 &&
+                listViewNewSize.Height >= listViewOriginalSize.Height + offset.Height - 5 && listViewNewSize.Height <= listViewOriginalSize.Height + offset.Height + 5,
                 "A fájlmegjelenítő lista nem méreteződik az ablakkal");
 
             var editContentNewSize = editContent.Size;
             Assert.IsTrue(
-                editContentNewSize.Width >= editContentOriginalSize.Width + (int)(offset.Width * (1- panelRatio)) - 15 && editContentNewSize.Width <= editContentOriginalSize.Width + (int)(offset.Width * (1- panelRatio)) + 15 &&
+                editContentNewSize.Width >= editContentOriginalSize.Width + (int)(offset.Width * (1 - panelRatio)) - 15 && editContentNewSize.Width <= editContentOriginalSize.Width + (int)(offset.Width * (1 - panelRatio)) + 15 &&
                 editContentNewSize.Height >= editContentOriginalSize.Height + offset.Height - 5 && editContentNewSize.Height <= editContentOriginalSize.Height + offset.Height + 5,
                 "A fájltartalom megjelenítő szövegdoboz nem jól méreteződik az ablakkal. A probléma oka lehet az is, hogy a details panel nem fix magasságú (nincs Top módon dokkolva).");
         }
-
-
-
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
