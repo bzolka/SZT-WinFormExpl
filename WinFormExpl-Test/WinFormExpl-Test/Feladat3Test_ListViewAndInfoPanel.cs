@@ -184,8 +184,10 @@ namespace WinFormExpl_Test
             Assert.IsTrue(
                 editContentNewSize.Width >= editContentOriginalSize.Width + (int)(offset.Width * (1 - panelRatio)) - 15 && editContentNewSize.Width <= editContentOriginalSize.Width + (int)(offset.Width * (1 - panelRatio)) + 15 &&
                 editContentNewSize.Height >= editContentOriginalSize.Height + offset.Height - 5 && editContentNewSize.Height <= editContentOriginalSize.Height + offset.Height + 5,
-                "A fájltartalom megjelenítő szövegdoboz nem jól méreteződik az ablakkal. A probléma oka lehet az, hogy a dock tulajdonságát nem jól állítotad be, " +
-                "de akár az is, hogy a details panel nem fix magasságú (nincs Top módon dokkolva).");
+                "A fájltartalom megjelenítő szövegdoboz nem jól méreteződik az ablakkal. A probléma okai lehetnek többek között: " +
+                "\r\n* A szövegdoboz dock tulajdonsága nincs jól beállítva" +
+                "\r\n* A details panel nem fix magasságú (nincs Top módon dokkolva)" +
+                "\r\n* A szövegdobozt nem a SplitContainer Panel2-n van, hanem a details panelen (a Document Outline ablakban ellenőrizhető és drag&drop-pal javítható)");
         }
 
         [ClassInitialize]
