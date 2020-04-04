@@ -100,6 +100,8 @@ namespace WinFormExpl_Test
             // Close the application and delete the session
             if (session != null)
             {
+                // https://github.com/Microsoft/WinAppDriver/issues/159
+
                 session.Close();
 
                 //try

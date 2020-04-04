@@ -11,7 +11,8 @@ namespace WinFormExpl_Test
     static class AssertFindElementExtensions
     {
         const string ErrorTextTemplate = "Nem található a következő felületelem: {0}. (Az is problémát okozhat, ha a vezérlő AccessibleName tulajdonságát is állítottad: " +
-                    "ha így történt, nyisd meg a megfelelő designer.cs forrásfájlt, és töröld ki azokat a sorokat, melyek az AccessibleName tulajdonságot állítják)";
+                    "ha így történt, nyisd meg a megfelelő designer.cs forrásfájlt, és töröld ki azokat a sorokat, melyek az AccessibleName tulajdonságot állítják. " +
+            "Szintén probléma lehet, ha a MessageBox feldobását nem kommentezted ki.)";
         public static WindowsElement AssertFindElementByName(this WindowsDriver<WindowsElement> session, string name, string elementType)
         {
             try
