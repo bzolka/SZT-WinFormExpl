@@ -69,8 +69,8 @@ namespace WinFormExpl_Test
 
                 session.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(50);
                 OpenContentForFile(fileA);
-    
-                //Thread.Sleep(200);
+
+                //Wait(200);
 
                 var parameters = parametersForYears[Year.Current];
                 int expectedProgress_Width_InPixels = (int)(parameters.Progress_Width_InPixels * dpiScale);
@@ -115,9 +115,9 @@ namespace WinFormExpl_Test
         public void TestContentIsUpdatedAfterTimeout()
         {
             string fileName = fileA;
-            string filePath = Path.Combine(rootPath, fileName);
+            string filePath = Path.Combine(RootPath, fileName);
             OpenContentForFile(fileName);
-            Thread.Sleep(300);
+            Wait(300);
             var editContent = assertElements.FileContentEdit();
             string fileContentTextOriginal = File.ReadAllText(filePath);
             Assert.AreEqual(fileContentTextOriginal, editContent.Text, "A többsoros szövegdoboz nem jeleníti meg a fájl tartalmát");
@@ -255,7 +255,7 @@ namespace WinFormExpl_Test
             // Set path to a folder where we have some files
             InputDialog dlg = new InputDialog(session);
             dlg.OpenDialog();
-            dlg.SetEditText(rootPath);
+            dlg.SetEditText(RootPath);
             dlg.CloseWithOk();
         }
 

@@ -24,7 +24,7 @@ namespace WinFormExpl_Test
             // Probléma: ClassCleanup csak későn hívódik a tesztek futtatása után, nem akkor, amikor az egyik osztály minden tesztje lefutott már 
             //var exitMenu = session.AssertFindElementByName("Exit", "menü");
             //exitMenu.Click();
-            //Thread.Sleep(1000); // Not sure if this is needed
+            //Wait(1000); // Not sure if this is needed
             //session.AssertElementNotFound("File", "Az Exit menü nem zárja be az alkalmazást!");
 
         }

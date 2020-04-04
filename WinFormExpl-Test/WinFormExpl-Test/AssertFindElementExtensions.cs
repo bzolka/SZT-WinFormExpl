@@ -10,6 +10,8 @@ namespace WinFormExpl_Test
 {
     static class AssertFindElementExtensions
     {
+        const string ErrorTextTemplate = "Nem található a következő felületelem: {0}. (Az is problémát okozhat, ha a vezérlő AccessibleName tulajdonságát is állítottad: " +
+                    "ha így történt, nyisd meg a megfelelő designer.cs forrásfájlt, és töröld ki azokat a sorokat, melyek az AccessibleName tulajdonságot állítják)";
         public static WindowsElement AssertFindElementByName(this WindowsDriver<WindowsElement> session, string name, string elementType)
         {
             try
@@ -18,8 +20,7 @@ namespace WinFormExpl_Test
             }
             catch (InvalidOperationException)
             {
-                Assert.Fail($"Nem található a következő felületelem: {name} {elementType}. (Az is problémát okozhat, ha a vezérlő AccessibleName tulajdonságát is állítottad: " +
-                    $"ha így történt, nyisd meg a megfelelő designer.cs forrásfájlt, és töröld ki azokat a sorokat, melyek az AccessibleName tulajdonságot állítják)");
+                Assert.Fail(string.Format(ErrorTextTemplate, name + " " + elementType));
                 throw; // Needed to reassure the compiler
             }
         }
@@ -32,8 +33,25 @@ namespace WinFormExpl_Test
             }
             catch (InvalidOperationException)
             {
-                Assert.Fail($"Nem található a következő felületelem: {elementDescription}. (Az is problémát okozhat, ha a vezérlő AccessibleName tulajdonságát is állítottad: " +
-                    $"ha így történt, nyisd meg a megfelelő designer.cs forrásfájlt, és töröld ki azokat a sorokat, melyek az AccessibleName tulajdonságot állítják)"); throw; // Needed to reassure the compiler
+                Assert.Fail(string.Format(ErrorTextTemplate, elementDescription));
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Finds element by TagName, which is of "type", e.g. for TextBox it's Edit. You can find the TagName out by finding the element by other means
+        /// and then checking the TagName property of the WindowsElement object and removing the "ControlType." prefix.
+        /// </summary>
+        public static WindowsElement AssertFindElementByTagName(this WindowsDriver<WindowsElement> session, string xpath, string tagName)
+        {
+            try
+            {
+                return session.FindElementByTagName(xpath);
+            }
+            catch (InvalidOperationException)
+            {
+                Assert.Fail(string.Format(ErrorTextTemplate, tagName));
+                throw;
             }
         }
 
@@ -50,8 +68,7 @@ namespace WinFormExpl_Test
                 {
                 }
             }
-            Assert.Fail($"Nem található a következő felületelem: {names[0]} {elemetType} (Az is problémát okozhat, ha a vezérlő AccessibleName tulajdonságát is állítottad: " +
-                    $"ha így történt, nyisd meg a megfelelő designer.cs forrásfájlt, és töröld ki azokat a sorokat, melyek az AccessibleName tulajdonságot állítják)");
+            Assert.Fail(string.Format(ErrorTextTemplate, names[0] + " " + elemetType));
             throw new Exception("never get here"); // Needed to reassure the compiler
         }
 

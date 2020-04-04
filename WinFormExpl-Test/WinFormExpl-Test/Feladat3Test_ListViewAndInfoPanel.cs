@@ -36,12 +36,14 @@ namespace WinFormExpl_Test
             AssertFindListViewItemForFileOrDir(fileA);
             // fileB
             AssertFindListViewItemForFileOrDir(fileB);
+
+            const string fileSizeProblemText = "listaelem, méret. A listában a Size oszlopban listaelemek nincsenek" +
+                " kitöltve, vagy nem a méretet jelenítik meg, vagy nem jó formátumban jelenítik meg " +
+                "(a méret oszlop a fájl méretét jelenítse meg byte-ban, csak a számot, mindenféle mértékegység hozzáfűzése nélkül)";
             // fileA size
-            session.AssertFindElementByXPath($"//Text[contains(@Name,\"{fileASize}\")]", "listaelem, méret (a listában a Size oszlopban listaelemek nincsenek" +
-                " kitöltve, vagy nem a méretet jelenítik meg, vagy nem jó formátumban jelenítik meg)");
+            session.AssertFindElementByXPath($"//Text[contains(@Name,\"{fileASize}\")]", fileSizeProblemText);
             // fileB size
-            session.AssertFindElementByXPath($"//Text[contains(@Name,\"{fileBSize}\")]", "listaelem, méret (a listában a Size oszlopban listaelemek nincsenek" +
-                " kitöltve, vagy nem a méretet jelenítik meg, vagy nem jó formátumban jelenítik meg)");
+            session.AssertFindElementByXPath($"//Text[contains(@Name,\"{fileBSize}\")]", fileSizeProblemText);
 
             //var elements = session.FindElementsByXPath("//*");
             // session.AssertFindElementByXPath("/ListItem[@T=\"a.txt\"]", "alma");
@@ -74,7 +76,7 @@ namespace WinFormExpl_Test
             //var lName = session.AssertFindElementByXPath("//Text[@Name=\"b.txt\"][@AutomationId=\"lName\"]", "Olyan címke, mely a listában kiválasztott fájl nevét mutatja. Vagy ha létezik a címke, " +
             //    "akkor az nem az aktuálisan kiválasztott fájl nevét jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl nevét!");
 
-            string sCreated = new FileInfo(Path.Combine(rootPath, "b.txt")).CreationTime.ToString();
+            string sCreated = new FileInfo(Path.Combine(RootPath, "b.txt")).CreationTime.ToString();
             session.AssertFindElementByXPath($"//Text[contains(@Name,\"{sCreated}\")][@AutomationId=\"lCreated\"]", "Olyan címke, mely a listában kiválasztott fájl létrehozási dátumát mutatja. Vagy ha létezik a címke, " +
                 "akkor az nem az aktuálisan kiválasztott fájl létrehozási dátumát jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl létrehozási dátumát." +
                 " Szintén probléma lehet, ha a fájl létrehozás dátumát nem egy lCreated nevű Label jelenítni meg.");
@@ -110,17 +112,17 @@ namespace WinFormExpl_Test
             // Double click on fileA in ListView
             OpenContentForFile(fileName);
             var editContent = assertElements.FileContentEdit();
-            Thread.Sleep(300);
-            string fileContentText = File.ReadAllText(Path.Combine(rootPath, fileName));
+            Wait(300);
+            string fileContentText = File.ReadAllText(Path.Combine(RootPath, fileName));
             Assert.AreEqual(fileContentText, editContent.Text, "A többsoros szövegdoboz nem jeleníti meg a fájl tartalmát");
         }
 
-        [TestMethod]
-        public void TestRun()
-        {
-            // Ezt idén kihagyjuk, .NET Core-ban más, a feladatsorból is kikerült
+        //[TestMethod]
+        //public void TestRun()
+        //{
+        //    // Ezt idén kihagyjuk, .NET Core-ban más, a feladatsorból is kikerült
 
-        }
+        //}
 
         [TestMethod]
         public void TestDock()
@@ -156,7 +158,7 @@ namespace WinFormExpl_Test
             // Resize main window
             var newWindowSize = new Size(originalWindowSize.Width + offset.Width, originalWindowSize.Height + offset.Height);
             session.Manage().Window.Size = newWindowSize;
-            Thread.Sleep(500);
+            Wait(500);
 
             // Check if main window could actually be resized
             var actualWindowSize = session.Manage().Window.Size;

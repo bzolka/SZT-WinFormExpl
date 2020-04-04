@@ -34,7 +34,7 @@ namespace WinFormExpl_Test
                 // Check if the dialog can be open
                 dlg.OpenDialog();
                 // We had better not test with empty string, students may not think that it should be covered
-                dlg.SetEditText(rootPath);
+                dlg.SetEditText(RootPath);
                 dlg.CloseWithOk();
             }
         }
@@ -46,9 +46,9 @@ namespace WinFormExpl_Test
             {
                 // Check if Textbox exists and we can type into it
                 dlg.OpenDialog();
-                dlg.SetEditText(rootPath);
+                dlg.SetEditText(RootPath);
                 string dlgPath = dlg.GetEditText();
-                Assert.AreEqual(rootPath, dlgPath);
+                Assert.AreEqual(RootPath, dlgPath);
             }
         }
 
@@ -88,7 +88,7 @@ namespace WinFormExpl_Test
                     .Release()
                     .Perform();
 
-                Thread.Sleep(500); // Not sure if needed
+                Wait(500); // Not sure if needed
 
                 // This is important, the mouse drag could result a slightly different size change compared to mouse offset
                 offset = rawDialog.Size - dlgOriginalSize;

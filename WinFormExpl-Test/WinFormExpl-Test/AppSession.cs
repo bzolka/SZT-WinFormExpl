@@ -16,14 +16,15 @@ namespace WinFormExpl_Test
 {
     public class AppSession
     {
+        protected static bool FastAndUnsafe = false;
         protected const string WindowsApplicationDriverUrl = "http://127.0.0.1:4723";
-        protected static readonly TimeSpan DefaultSessionImplicitWaitSec = TimeSpan.FromSeconds(0.1);
+        protected static TimeSpan DefaultSessionImplicitWaitSec ;
         // This setting can be overridden by the runsettings file
         //private static string AppId = @"d:\Tanszek\BZ\SZT-WinForms-Test\Feladatok\WindowsFormsApp\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe";
         private static string AppId = @"..\..\..\..\SampleSolution\WinFormExpl\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe";
         // private static string AppId = @"..\Feladatok\WindowsFormsApp\bin\Debug\netcoreapp3.1\publish\ProjectFileForTest.exe";
         // This setting can be overridden by the runsettings file
-        protected static string rootPath = @"..\..\..\TestFiles";
+        protected static string RootPath = @"..\..\..\TestFiles";
         //protected static string rootPath = Path.GetFullPath(@".\TestFiles");
 
         protected const string fileA = "a.txt";
@@ -41,26 +42,42 @@ namespace WinFormExpl_Test
 
         public static void Setup(TestContext context)
         {
+            DefaultSessionImplicitWaitSec = FastAndUnsafe ? TimeSpan.FromSeconds(0.01) : TimeSpan.FromSeconds(0.1);
+
             // Launch a new instance of Notepad application
             if (session == null)
             {
-                // Get AppId from environment variable (highest prio)
-                string appId = Environment.GetEnvironmentVariable("AppId");
-                // Get AppId from .runsettings
-                if (appId == null)
-                    appId = (string)context.Properties["AppId"];
-                // If not provided as env var nor as in .runsettings, use default
-                if (appId != null)
-                    AppId = (string)appId;
+                //// Get AppId from environment variable (highest prio)
+                //string appId = Environment.GetEnvironmentVariable("AppId");
+                //// Get AppId from .runsettings
+                //if (appId == null)
+                //    appId = (string)context.Properties["AppId"];
+                //// If not provided as env var nor as in .runsettings, use default
+                //if (appId != null)
+                //    AppId = appId;
+                //AppId = Path.GetFullPath(AppId); // WindowsDriver apparently cannot work with relative paths (sounds reasonable if path is sent to WinAPpDriver server)
+                //context.WriteLine("AppId: " + AppId);
+
+
+                //// Get RootPath from environment variable (highest prio)
+                //string rootPath = Environment.GetEnvironmentVariable("RootPath");
+                //// Get RootPath from .runsettings
+                //if (rootPath == null)
+                //    rootPath = (string)context.Properties["RootPath"];
+                //// If not provided as env var nor as in .runsettings, use default
+                //if (rootPath != null)
+                //    RootPath = rootPath;
+                //RootPath = Path.GetFullPath(RootPath);
+                //context.WriteLine("rootPath: " + RootPath);
+
+                applySetting<string>(context, "AppId", setting => AppId = setting);
                 AppId = Path.GetFullPath(AppId); // WindowsDriver apparently cannot work with relative paths (sounds reasonable if path is sent to WinAPpDriver server)
                 context.WriteLine("AppId: " + AppId);
-
-                // Get RootPath from .runsettings
-                var tempRootPath = context.Properties["RootPath"];
-                if (tempRootPath != null)
-                    rootPath = (string)tempRootPath;
-                rootPath = Path.GetFullPath(rootPath);
-                context.WriteLine("rootPath: " + rootPath);
+                applySetting<string>(context, "RootPath", setting => RootPath = setting);
+                RootPath = Path.GetFullPath(RootPath); // Make this a full path, student solutions may not be able to work with relative paths
+                context.WriteLine("RootPath: " + RootPath);
+                applySetting<bool>(context, "FastAndUnSafe", setting => FastAndUnsafe = setting);
+                context.WriteLine("FastAndUnSafe: " + FastAndUnsafe);
 
                 // Create a new session to launch Notepad application
                 DesiredCapabilities appCapabilities = new DesiredCapabilities();
@@ -73,7 +90,7 @@ namespace WinFormExpl_Test
                 // Verify that App is started
                 Assert.AreEqual("MiniExplorer", session.Title, "Nem található a MiniExplorer fejlécű ablak");
 
-                // Set implicit timeout to 1.5 seconds to make element search to retry every 500 ms for at most three times
+                // Set implicit timeout to xxx seconds to make element search to retry every 500 ms for at most three times
                 session.Manage().Timeouts().ImplicitWait = DefaultSessionImplicitWaitSec;
             }
         }
@@ -102,6 +119,11 @@ namespace WinFormExpl_Test
         {
         }
 
+        public static void Wait(int millisec)
+        {
+            Thread.Sleep(FastAndUnsafe ? 0 : millisec);
+        }
+
         protected  WindowsElement OpenDialog()
         {
             var fileMenu = session.AssertFindElementByName("File", "menü");
@@ -109,7 +131,7 @@ namespace WinFormExpl_Test
             var openMenu = session.AssertFindElementByName("Open", "menü");
             openMenu.Click();
 
-            Thread.Sleep(200); // Wait for half second until the  dialog appears
+            Wait(200); // Wait until the  dialog appears
 
             var dialog = session.AssertFindElementByName("InputDialog", "dialógus ablak");
             return dialog;
@@ -125,7 +147,7 @@ namespace WinFormExpl_Test
 
         protected static void SetCurrentPathToRoot()
         {
-            SetCurrentPath(rootPath);
+            SetCurrentPath(RootPath);
         }
 
         protected static void SetCurrentPath(string path)
@@ -150,6 +172,56 @@ namespace WinFormExpl_Test
         {
             return session.AssertFindElementByXPath($"//ListItem[@Name=\"{fileOrDirName}\"]/Text",
                 messageOverride ?? $"{(isDir ? "mappanevet" : "fájlnevet")} megjelenítő listaelem");
+        }
+
+
+        static string getSetting(TestContext context, string settingName)
+        {
+            // Get setting from environment variable (highest prio)
+            string setting = Environment.GetEnvironmentVariable(settingName);
+            // Get setting from .runsettings
+            if (setting == null)
+                setting = (string)context.Properties[settingName];
+            return setting;
+        }
+
+        static void applySetting<T>(TestContext context, string settingName, Action<T> applySettingAction)
+        {
+            // Get setting from environment variable (highest prio)
+            string setting = Environment.GetEnvironmentVariable(settingName);
+            // Get setting from .runsettings
+            if (setting == null)
+                setting = (string)context.Properties[settingName];
+
+            if (setting != null)
+            {
+                T val;
+                if (typeof(T) == typeof(string))
+                    val = (T)(object)setting;
+                else if (typeof(T) == typeof(bool))
+                    val = (T)(object)Convert.ToBoolean(setting);
+                else if (typeof(T) == typeof(int))
+                    val = (T)(object)Convert.ToInt32(setting);
+                else
+                    throw new NotSupportedException("getSetting: The specified type is not supported");
+
+                applySettingAction(val);
+            }
+
+            context.WriteLine($"{settingName}: {setting}");
+
+            //if (typeof(T) == typeof(bool))
+            //{
+            //    return (T)(object)Convert.ToBoolean(setting);
+            //}
+            //if (typeof(T) == typeof(int))
+            //{
+            //    return (T)(object)Convert.ToInt32(setting);
+            //}
+            //else if (typeof(T) == typeof(string))
+            //    return (T)(object)setting;
+            //else
+            //   throw new NotSupportedException("getSetting: The specified type is not supported");
         }
 
     }

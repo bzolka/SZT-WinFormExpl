@@ -27,14 +27,16 @@ namespace WinFormExpl_Test
             var openMenu = session.AssertFindElementByName("Open", "menü");
             openMenu.Click();
 
-            Thread.Sleep(200); // Wait for half second until the  dialog appears
+            AppSession.Wait(200); // Wait until the  dialog appears
 
             dialog = session.AssertFindElementByName("InputDialog", "dialógus ablak");
             return dialog;
         }
         public WindowsElement GetEdit()
         {
-            return session.AssertFindElementByXPath("//Edit", "TextBox az útvonal bekéréshez");
+            // Both works, originally thought AssertFindElementByTagName is faster, does not seem so
+            //return session.AssertFindElementByXPath("//Edit", "TextBox az útvonal bekéréshez");
+            return session.AssertFindElementByTagName("Edit", "TextBox az útvonal bekéréshez");
         }
 
         public WindowsElement GetOkButton()
@@ -70,7 +72,7 @@ namespace WinFormExpl_Test
         {
             var cancelButton = GetCancelButton();
             cancelButton.Click();
-            Thread.Sleep(500);
+            AppSession.Wait(500);
             session.AssertElementNotFound("Cancel", "A Cancel gomb nem zárja be a dialógus ablakot + (az is probléma lehet, ha túl széles/magas a dialógusablak).");
         }
 
@@ -78,7 +80,7 @@ namespace WinFormExpl_Test
         {
             var OklButton = GetOkButton();
             OklButton.Click();
-            Thread.Sleep(500);
+            AppSession.Wait(500);
             session.AssertElementNotFound("Ok", "Az OK gomb nem zárja be a dialógus ablakot.");
         }
 

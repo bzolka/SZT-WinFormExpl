@@ -36,7 +36,7 @@ namespace WinFormExpl_Test
             var lvItem = AssertFindListViewItem_Text_ForFileOrDir(FolderA, true);
             lvItem.DoubleClick();
 
-            Thread.Sleep(200);
+            Wait(200);
 
             AssertFindListViewItem_Text_ForFileOrDir(fileC);
             AssertFindListViewItem_Text_ForFileOrDir(fileD);
@@ -53,7 +53,7 @@ namespace WinFormExpl_Test
         [TestMethod]
         public void TestParentFolderDoupleClickNavigatesToParent()
         {
-            SetCurrentPath(Path.Combine(rootPath, FolderA));
+            SetCurrentPath(Path.Combine(RootPath, FolderA));
 
             var lvItem = AssertFindListViewItem_Text_ForFileOrDir(FolderParent, true, "..-ot megjelenítő listaelem");
             lvItem.DoubleClick();
@@ -65,7 +65,7 @@ namespace WinFormExpl_Test
         [TestMethod]
         public void TestParentFolderIsNotDisplayedInRoot()
         {
-            string root = Path.GetPathRoot(rootPath);
+            string root = Path.GetPathRoot(RootPath);
             SetCurrentPath(root);
 
             try
