@@ -71,7 +71,7 @@ namespace WinFormExpl_Test
             var cancelButton = GetCancelButton();
             cancelButton.Click();
             Thread.Sleep(500);
-            session.AssertElementNotFound("Cancel", "A Cancel gomb nem zárja be a dialógus ablakot.");
+            session.AssertElementNotFound("Cancel", "A Cancel gomb nem zárja be a dialógus ablakot + (az is probléma lehet, ha túl széles/magas a dialógusablak).");
         }
 
         public void CloseWithOk()

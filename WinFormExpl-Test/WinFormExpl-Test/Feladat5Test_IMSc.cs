@@ -22,11 +22,11 @@ namespace WinFormExpl_Test
             var lvItem = AssertFindListViewItem_Text_ForFileOrDir(FolderA, true);
         }
 
-        [TestMethod]
-        public void Test_Inconclusive()
-        {
-            Assert.Inconclusive("Dummy inconclusive");
-        }
+        //[TestMethod]
+        //public void Test_Inconclusive()
+        //{
+        //    Assert.Inconclusive("Dummy inconclusive");
+        //}
 
         [TestMethod]
         public void TestDirsCanBeOpen()
