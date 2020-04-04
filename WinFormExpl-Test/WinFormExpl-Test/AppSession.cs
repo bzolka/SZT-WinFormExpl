@@ -44,11 +44,14 @@ namespace WinFormExpl_Test
             // Launch a new instance of Notepad application
             if (session == null)
             {
-                bool e = File.Exists(AppId);
+                // Get AppId from environment variable (highest prio)
+                string appId = Environment.GetEnvironmentVariable("AppId");
                 // Get AppId from .runsettings
-                var tempAppId = context.Properties["AppId"];
-                if (tempAppId != null)
-                    AppId = (string)tempAppId;
+                if (appId == null)
+                    appId = (string)context.Properties["AppId"];
+                // If not provided as env var nor as in .runsettings, use default
+                if (appId != null)
+                    AppId = (string)appId;
                 AppId = Path.GetFullPath(AppId); // WindowsDriver apparently cannot work with relative paths (sounds reasonable if path is sent to WinAPpDriver server)
                 context.WriteLine("AppId: " + AppId);
 
