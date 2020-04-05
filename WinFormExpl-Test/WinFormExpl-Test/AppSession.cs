@@ -104,12 +104,19 @@ namespace WinFormExpl_Test
 
                 session.Close();
 
-                //try
-                //{
-                //    // Dismiss Save dialog if it is blocking the exit
-                //    session.FindElementByName("Don't Save").Click();
-                //}
-                //catch { }
+                try
+                {
+                    // Dismiss message box if displayed
+                    session.FindElementByName("Ok").Click();
+                }
+                catch { }
+
+                try
+                {
+                    // Dismiss assert box if displayed
+                    session.FindElementByName("Quit").Click();
+                }
+                catch { }
 
                 session.Quit();
                 session = null;

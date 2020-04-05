@@ -88,7 +88,7 @@ namespace WinFormExpl_Test
                 // Ez minden évben ugyanaz a tervek szerint, mehet a hallgatók felé is a visszajelzés
                 Assert.IsTrue(Math.Abs(expectedProgress_Width_InPixels - lenAtStart.Value) < 15,
                     "A következő frissítésig hátralevő időt jelző kitöltött téglalap kezdeti hossza nem megfelelő. A problémát az is okozhatja, ha a tartalom megjelenítő nem " +
-                    "egér duplakattintás eseményre, hanem új listaelem kiválasztás eseményre frissül.");
+                    "egér duplakattintás eseményre, hanem új listaelem kiválasztás eseményre frissül, vagy ha a megjelenítés nem a (0,0) koordinátában kezdődik.");
 
                 int dLen = lenAtStart.Value - lenAfter2Sec.Value;
                 if (dLen == 0)
@@ -205,7 +205,7 @@ namespace WinFormExpl_Test
         int? tryFindForBackgroundColor(Bitmap image, Color backgroundColor, int startX, int maxX, int y)
         {
             int x = startX;
-            while (image.GetPixel(x, y).ToArgb() != backgroundColor.ToArgb()) // ToArgb is important to comapre only the color (ARGB) members
+            while (image.GetPixel(x, y).ToArgb() != backgroundColor.ToArgb()) // ToArgb is important to compare only the color (ARGB) members
             {
                 if (x == maxX)
                     return null;
