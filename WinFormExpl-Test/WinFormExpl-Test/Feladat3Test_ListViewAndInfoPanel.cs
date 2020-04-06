@@ -5,23 +5,22 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium.Appium.Windows;
 using OpenQA.Selenium.Interactions;
+using WinFormExpl_Test;
 
-namespace WinFormExpl_Test
+namespace WinFormExpl_Test1
 {
     [TestClass]
     public class Feladat3Test_ListViewAndInfoPanel: AppSession
     {
         AssertElements assertElements = new AssertElements(session);
 
-
         [TestMethod]
-        public void TestSplitter()
+        public void TestContentView()
         {
-            // Volt olyan hallgatói megoldás, ahol ez nagy DPI-n nálam elesett, de 
-            // sima full hd-n nem! De aztán visszatéve uhd/nagy dpi-be, WinAppDriver újraindítva már megtalálta!
-            // TODO-bz, ez csak akkor működik, ha nem nevezte át? 
-            session.AssertFindElementByXPath("//Pane[starts-with(@AutomationId,\"splitContainer\")]", "Splitter");
-        }
+            testSelectionDoesNotChangeContent();
+            testContentForFile(fileA);
+            testContentForFile(fileB);
+        }      
 
         [TestMethod]
         public void TestFileView()
@@ -83,11 +82,12 @@ namespace WinFormExpl_Test
         }
 
         [TestMethod]
-        public void TestContentView()
+        public void TestSplitter()
         {
-            testSelectionDoesNotChangeContent();
-            testContentForFile(fileA);
-            testContentForFile(fileB);
+            // Volt olyan hallgatói megoldás, ahol ez nagy DPI-n nálam elesett, de 
+            // sima full hd-n nem! De aztán visszatéve uhd/nagy dpi-be, WinAppDriver újraindítva már megtalálta!
+            // TODO-bz, ez csak akkor működik, ha nem nevezte át? 
+            session.AssertFindElementByXPath("//Pane[starts-with(@AutomationId,\"splitContainer\")]", "Splitter");
         }
 
         void testSelectionDoesNotChangeContent()

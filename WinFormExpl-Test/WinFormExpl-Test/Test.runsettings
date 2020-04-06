@@ -7,6 +7,7 @@
     <!--<Parameter name="AppId" value="..\..\..\..\..\SZT-WinForms-Test\Feladatok\WinFormExpl\bin\Debug\netcoreapp3.1\ProjectFileForTest.exe" />-->
 
     <Parameter name="RootPath" value="..\..\..\TestFiles" />
+    <!--<Parameter name="RootPath" value="d:\a\TestFiles" />-->
     <Parameter name="FastAndUnSafe" value="true" />
   </TestRunParameters>
 </RunSettings>

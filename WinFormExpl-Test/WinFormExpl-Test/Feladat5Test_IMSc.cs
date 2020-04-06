@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WinFormExpl_Test;
 
 namespace WinFormExpl_Test
 {
@@ -14,6 +15,7 @@ namespace WinFormExpl_Test
     {
         const string IMSc_MessagePrefix = "IMSc - ";
 
+        
         [TestMethod]
         public void TestDirsDisplayed()
         {

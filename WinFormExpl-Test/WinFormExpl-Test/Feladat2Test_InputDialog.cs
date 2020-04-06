@@ -6,8 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium.Windows;
 using OpenQA.Selenium.Interactions;
+using WinFormExpl_Test;
 
-namespace WinFormExpl_Test
+namespace WinFormExpl_Test1
 {
     // TODO-BZ - mindenképpen be kell zárni a modális ablakokot, különben bezavar a többi tesztbe!
     [TestClass]

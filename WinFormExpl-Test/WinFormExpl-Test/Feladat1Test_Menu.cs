@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WinFormExpl_Test;
 
-namespace WinFormExpl_Test
+namespace WinFormExpl_Test1
 {
     [TestClass]
     public class Feladat1Test_Menu: AppSession

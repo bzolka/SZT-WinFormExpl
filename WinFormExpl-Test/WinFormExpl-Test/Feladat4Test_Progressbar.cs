@@ -6,8 +6,9 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WinFormExpl_Test;
 
-namespace WinFormExpl_Test
+namespace WinFormExpl_Test1
 {
     [TestClass]
     public class Feladat4Test_Progressbar : AppSession
