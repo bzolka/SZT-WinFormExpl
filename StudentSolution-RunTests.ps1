@@ -1,0 +1,1 @@
+dotnet test WinFormExpl-Test/WinFormExpl-Test/bin/Debug/WinFormExpl-Test.dll --verbosity detailed -s StudentSolution-Test.runsettings

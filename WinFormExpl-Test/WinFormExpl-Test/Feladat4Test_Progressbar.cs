@@ -254,10 +254,13 @@ namespace WinFormExpl_Test1
         static void InitPath()
         {
             // Set path to a folder where we have some files
-            InputDialog dlg = new InputDialog(session);
-            dlg.OpenDialog();
-            dlg.SetEditText(RootPath);
-            dlg.CloseWithOk();
+            using (InputDialog dlg = new InputDialog(session))
+            {
+                dlg.OpenDialog();
+                dlg.SetEditText(RootPath);
+                dlg.CloseWithOk();
+            }
+      
         }
 
         [ClassInitialize]

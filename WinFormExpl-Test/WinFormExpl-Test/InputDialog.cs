@@ -100,6 +100,14 @@ namespace WinFormExpl_Test
 
         public void Dispose()
         {
+            // Students might have forgoten to commen out the messagebox, let's try to close it
+            try
+            {
+                // Dismiss message box if displayed
+                session.FindElementByName("OK").Click();
+            }
+            catch { }
+
             try
             {
                 var dialog = session.AssertFindElementByName("InputDialog", "dialógus ablak");
