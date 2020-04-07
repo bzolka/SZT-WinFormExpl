@@ -10,9 +10,11 @@ namespace WinFormExpl_Test
 {
     static class AssertFindElementExtensions
     {
-        const string ErrorTextTemplate = "Nem található a következő felületelem: {0}. (Az is problémát okozhat, ha a vezérlő AccessibleName tulajdonságát is állítottad: " +
-                    "ha így történt, nyisd meg a megfelelő designer.cs forrásfájlt, és töröld ki azokat a sorokat, melyek az AccessibleName tulajdonságot állítják. " +
-            "Szintén probléma lehet, ha a MessageBox feldobását nem kommentezted ki. Vagy lehet egy extra space is az adott elem elején/végén.)";
+        const string ErrorTextTemplate = "Nem található a következő felületelem: {0}. Pár lehetséges speciálisabb ok \r\n:" 
+            + "* A vezérlő AccessibleName tulajdonságát is állítottad: ha így történt, nyisd meg a megfelelő designer.cs forrásfájlt, és töröld ki azokat a sorokat, melyek az AccessibleName tulajdonságot állítják. "
+            + "* A MessageBox feldobását nem kommentezted ki. "
+            + "* Van egy extra space is az adott elem szövegének az elején/végén."
+            + "* Valamilyen hiba keletkezett az előző tesztek egyikének következtében, ami egy hibaablak megjelenését vonja maga után";
         public static WindowsElement AssertFindElementByName(this WindowsDriver<WindowsElement> session, string name, string elementType)
         {
             try
@@ -21,6 +23,7 @@ namespace WinFormExpl_Test
             }
             catch (InvalidOperationException)
             {
+                assertInCaseErrorMessageIsDisplayed_AndCloseDialog(session);
                 Assert.Fail(string.Format(ErrorTextTemplate, name + " " + elementType));
                 throw; // Needed to reassure the compiler
             }
@@ -34,6 +37,7 @@ namespace WinFormExpl_Test
             }
             catch (InvalidOperationException)
             {
+                assertInCaseErrorMessageIsDisplayed_AndCloseDialog(session);
                 Assert.Fail(string.Format(ErrorTextTemplate, elementDescription));
                 throw;
             }
@@ -51,6 +55,7 @@ namespace WinFormExpl_Test
             }
             catch (InvalidOperationException)
             {
+                assertInCaseErrorMessageIsDisplayed_AndCloseDialog(session);
                 Assert.Fail(string.Format(ErrorTextTemplate, tagName));
                 throw;
             }
@@ -69,6 +74,7 @@ namespace WinFormExpl_Test
                 {
                 }
             }
+            assertInCaseErrorMessageIsDisplayed_AndCloseDialog(session);
             Assert.Fail(string.Format(ErrorTextTemplate, names[0] + " " + elemetType));
             throw new Exception("never get here"); // Needed to reassure the compiler
         }
@@ -83,6 +89,57 @@ namespace WinFormExpl_Test
             catch (InvalidOperationException)
             {
             }
+        }
+
+        static void assertInCaseErrorMessageIsDisplayed_AndCloseDialog(WindowsDriver<WindowsElement> session)
+        {
+            string msg = getErrorMessage_InCaseErrorMessageIsDisplayed_AndCloseDialog(session);
+            if (msg != null)
+                Assert.Fail("Nem található egy felületelem. Ennek oka, hogy a teszt, vagy egy előző teszt következtében az alkalmazás egy hibaablakot" +
+                    " jelenít meg az alábbi szöveggel: \r\n" + msg);
+        }
+
+        static string getErrorMessage_InCaseErrorMessageIsDisplayed_AndCloseDialog(WindowsDriver<WindowsElement> session)
+        {
+            WindowsElement bQuit = null;
+            WindowsElement bDetails = null;
+            try
+            {
+                bQuit = session.FindElementByName("Quit");
+            } catch { }
+
+            try
+            {
+                bDetails = session.FindElementByName("Details");
+            }
+            catch { }
+
+            // Probably we don't have the standard error window
+            if (bQuit == null || bDetails == null)
+                return null;
+
+            // Open Details
+            bDetails.Click();
+
+            // Try to find details textbox
+
+            string errorText = null;
+            try
+            {
+                errorText = session.FindElementByTagName("Edit").Text;
+            }
+            catch { }
+
+            // !!!!!
+            // Valami nagyon mellément, zárjuk be az alkalmazást. De valóban ez a jó irány? Nemdeterminisztikus, mi az időzítése,
+            // lehet már nem is lesz alkalma az alkalmazásnak kinaplózni a hibaszöveget? Jobb lenne a "Continue" használata?
+            try
+            {
+                bQuit.Click();
+            }
+            catch { }
+
+            return errorText;
         }
     }
 }
