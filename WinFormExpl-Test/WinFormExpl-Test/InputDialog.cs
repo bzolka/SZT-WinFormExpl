@@ -101,6 +101,17 @@ namespace WinFormExpl_Test
         public void Dispose()
         {
             // Students might have forgoten to commen out the messagebox, let's try to close it
+            // The problem: we don't know if this is the OK button of the InputDialog or of a message box
+            // Don't close the InputDialog with the OK here, that could result in an empty path set.
+            // Solution: use the below order of ops (better would be differentiate between the two windows somehow)
+
+            // This is for the Input dialog
+            try
+            {
+                session.FindElementByName("Cancel").Click();
+            }
+            catch { }
+
             try
             {
                 // Dismiss message box if displayed
