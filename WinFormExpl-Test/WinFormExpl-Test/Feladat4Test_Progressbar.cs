@@ -129,7 +129,10 @@ namespace WinFormExpl_Test1
                 File.WriteAllText(filePath, fileContentTextUpdated);
 
                 Thread.Sleep(parametersForYears[Year.Current].Progress_IntervalSec * 1000 + 2000);
-                Assert.AreEqual(fileContentTextUpdated, editContent.Text, "A többsoros szövegdoboz nem frissíti a fájl tartalmát az frissítési intervallum lejárta után");
+                const string errorMessage = "A többsoros szövegdoboz nem frissíti a fájl tartalmát az frissítési intervallum lejárta után";
+                if (fileContentTextUpdated == string.Empty)
+                    Assert.Fail(errorMessage);
+                Assert.AreEqual(fileContentTextUpdated, editContent.Text, errorMessage);
             }
             finally
             {
