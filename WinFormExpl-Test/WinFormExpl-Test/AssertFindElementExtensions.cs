@@ -10,11 +10,12 @@ namespace WinFormExpl_Test
 {
     static class AssertFindElementExtensions
     {
-        const string ErrorTextTemplate = "Nem található a következő felületelem: {0}. Pár lehetséges speciálisabb ok \r\n:" 
-            + "* A vezérlő AccessibleName tulajdonságát is állítottad: ha így történt, nyisd meg a megfelelő designer.cs forrásfájlt, és töröld ki azokat a sorokat, melyek az AccessibleName tulajdonságot állítják. "
-            + "* A MessageBox feldobását nem kommentezted ki. "
-            + "* Van egy extra space is az adott elem szövegének az elején/végén."
-            + "* Valamilyen hiba keletkezett az előző tesztek egyikének következtében, ami egy hibaablak megjelenését vonja maga után";
+        const string ErrorTextTemplate = "Nem található a következő felületelem: {0}" 
+            + "\r\nPár lehetséges speciálisabb ok:" 
+            + "\r\n* A vezérlő AccessibleName tulajdonságát is állítottad: ha így történt, nyisd meg a megfelelő designer.cs forrásfájlt, és töröld ki azokat a sorokat, melyek az AccessibleName tulajdonságot állítják. "
+            + "\r\n* A MessageBox feldobását nem kommentezted ki. "
+            + "\r\n* Van egy extra space is az adott elem szövegének az elején/végén."
+            + "\r\n* Valamilyen hiba keletkezett az előző tesztek egyikének következtében, ami egy hibaablak megjelenését vonja maga után";
         public static WindowsElement AssertFindElementByName(this WindowsDriver<WindowsElement> session, string name, string elementType)
         {
             try

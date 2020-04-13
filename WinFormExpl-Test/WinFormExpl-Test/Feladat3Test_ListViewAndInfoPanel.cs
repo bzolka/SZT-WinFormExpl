@@ -76,9 +76,11 @@ namespace WinFormExpl_Test1
             //    "akkor az nem az aktuálisan kiválasztott fájl nevét jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl nevét!");
 
             string sCreated = new FileInfo(Path.Combine(RootPath, "b.txt")).CreationTime.ToString();
-            session.AssertFindElementByXPath($"//Text[contains(@Name,\"{sCreated}\")][@AutomationId=\"lCreated\"]", "Olyan címke, mely a listában kiválasztott fájl létrehozási dátumát mutatja. Vagy ha létezik a címke, " +
-                "akkor az nem az aktuálisan kiválasztott fájl létrehozási dátumát jeleníti meg. Az is probléma lehet, hogy csak duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl létrehozási dátumát." +
-                " Szintén probléma lehet, ha a fájl létrehozás dátumát nem egy lCreated nevű Label jelenítni meg.");
+            session.AssertFindElementByXPath($"//Text[contains(@Name,\"{sCreated}\")][@AutomationId=\"lCreated\"]", "Olyan címke, mely a listában kiválasztott fájl létrehozási dátumát mutatja. Pár lehetséges probléma:"
+                + "\r\n * A cimke nem az aktuálisan kiválasztott fájl létrehozási dátumát jeleníti meg"
+                + "\r\n * Duplakattintás, és nem egyszerű kiválasztás után jeleníti meg a fájl létrehozási dátumát"
+                + "\r\n * A fájl létrehozás dátumát nem egy lCreated nevű Label jeleníti meg"
+                + "\r\n * A dátum formázása nem alapértelmezett (paraméter nélküli ToString() hívást használj)");
         }
 
         [TestMethod]
