@@ -95,7 +95,8 @@ namespace WinFormExpl_Test
                 .Replace("y", Keys.Alt + Keys.NumberPad1 + Keys.NumberPad2 + Keys.NumberPad1 + Keys.Alt)
                 .Replace("Y", Keys.Alt + Keys.NumberPad8 + Keys.NumberPad9 + Keys.Alt)
                 .Replace("z", Keys.Alt + Keys.NumberPad1 + Keys.NumberPad2 + Keys.NumberPad2 + Keys.Alt)
-                .Replace("Z", Keys.Alt + Keys.NumberPad9 + Keys.NumberPad0 + Keys.Alt);
+                .Replace("Z", Keys.Alt + Keys.NumberPad9 + Keys.NumberPad0 + Keys.Alt)
+                .Replace("0", Keys.Alt + Keys.NumberPad4 + Keys.NumberPad8 + Keys.Alt);
         }
 
         public void Dispose()
