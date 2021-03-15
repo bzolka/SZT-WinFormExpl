@@ -16,7 +16,7 @@ namespace WinFormExpl_Test1
         AssertElements assertElements = new AssertElements(session);
 
         // Make sure to update the Current item when introducing a new year
-        enum Year  { Y2020, Y2019, Y2018, Y2017, Y2016, Current = Y2020 };
+        enum Year  { Y2021, Y2020, Y2019, Y2018, Y2017, Y2016, Current = Y2021 };
 
         class ExpectedParams
         {
@@ -44,6 +44,7 @@ namespace WinFormExpl_Test1
             // ENNEK KAPCSÁN PROBLÉMA VAN!
             // SAJNOS ELRONTOTTAM, maradt az útmutatóban a 120 a 100 helyett, így itt is visszaírtam, 
             // ez a hajó elment.
+            { Year.Y2021, new ExpectedParams(120, 8, 3, Color.Blue) },
             { Year.Y2020, new ExpectedParams(120, 5, 4, Color.Green) },
             { Year.Y2019, new ExpectedParams(100, 2, 10, Color.Red) },
             { Year.Y2018, new ExpectedParams(100, 2, 10, Color.Red) },

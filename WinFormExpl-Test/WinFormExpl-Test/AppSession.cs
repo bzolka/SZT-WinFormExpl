@@ -88,7 +88,8 @@ namespace WinFormExpl_Test
                 Assert.IsNotNull(session.SessionId);
 
                 // Verify that App is started
-                Assert.AreEqual("MiniExplorer", session.Title, "Nem található a MiniExplorer fejlécű ablak");
+                // Assert.AreEqual("MiniExplorer", session.Title, "Nem található a MiniExplorer fejlécű ablak");
+                Assert.IsTrue(session.Title.StartsWith("MiniExplorer"), "Nem található a MiniExplorer szöveggel kezdődő fejlécű ablak");
 
                 // Set implicit timeout to xxx seconds to make element search to retry every 500 ms for at most three times
                 session.Manage().Timeouts().ImplicitWait = DefaultSessionImplicitWaitSec;

@@ -16,7 +16,7 @@ namespace WinFormExpl
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm_ABCDEF());
+            Application.Run(new Form1());
         }
     }
 }
